@@ -1,0 +1,257 @@
+<!-- 基本信息 + 详情信息 -->
+<script id="goodsFormContent" type="text/html">
+    <fieldset>
+        <input type="hidden" name="id" value="<%= dataArr.id %>">
+        <div class="goodsSeparated">
+            <h5 style="margin-bottom: 15px">主题基本信息&nbsp;  <% if(dataArr.id){ %> (<%- dataArr.statusText %>)<% } %>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary saveButton" type="button" data-operate="addGoods">保存</button>
+            </h5>
+            <div class="form-row" style="margin-bottom: 15px">
+                <% if(dataArr.id){ %>
+                <div class="col-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ID</span>
+                        </div>
+                        <input disabled type="text" value="<%= dataArr.id %>" class="form-control">
+                    </div>
+                </div>
+                <% } %>
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">专题名字</span>
+                        </div>
+                        <input type="text" name="name" placeholder="请输入专题名字" value="<%= dataArr.name %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">购买量</span>
+                        </div>
+                        <input type="text" name="buyCnt" placeholder="请输入购买量" value="<%= dataArr.buyCnt %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">排序</span>
+                        </div>
+                        <input type="text" name="sort" placeholder="请输入排序" value="<%= dataArr.sort %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">文章标题</span>
+                        </div>
+                        <input type="text" name="title" placeholder="请输入文章标题" value="<%= dataArr.title %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">副标题</span>
+                        </div>
+                        <input type="text" name="subTitle" placeholder="请输入副标题" value="<%= dataArr.subTitle %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">开始时间</span>
+                        </div>
+                        <input autocomplete="off" type="text" name="startTime" placeholder="请输入开始时间" onclick="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" value="<%= dataArr.startTime %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">结束时间</span>
+                        </div>
+                        <input autocomplete="off" type="text" name="endTime" placeholder="请输入结束时间" onclick="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" value="<%= dataArr.endTime %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传封面图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.coverImg) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.coverImg %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.coverImg %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无封面图</span></h6>
+                    <% } %>
+                    <h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的封面图的尺寸为641×220）</h6>
+                    <input type="hidden" name="coverImg" value="<%= dataArr.coverImg %>">
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传分享小图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.shareImg) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.shareImg %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.shareImg %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无分享小图</span></h6>
+                    <% } %>
+                    <h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的分享小图的尺寸为110×110）</h6>
+                    <input type="hidden" name="shareImg" value="<%= dataArr.shareImg %>">
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传精选封面图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.recommendImg) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.recommendImg %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.recommendImg %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无精选封面图</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的分享小图的尺寸为110×110）</h6>-->
+                    <input type="hidden" name="recommendImg" value="<%= dataArr.recommendImg %>">
+                </div>
+            </div>
+        </div>
+        <div class="tile-body">
+            <div id="basicMessage"></div>
+            <div class="row" style="margin-top: 10px">
+                <!--数据表格modelBuilder.js-->
+                <div class="col-lg-12" style="width: 97%">
+                    <ul class="nav nav-tabs" style="height: 50px">
+                        <li class="active" style="height: 28px">
+                            <a href="#qh1" id="headerTab1" data-toggle="tab" style="outline:none;color: orange;background: #ffffff;display: inline-block;height: 50px;font-size: 18px;cursor: pointer">主题详情介绍</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="tabContent1">
+                        <div class="goodsSeparated"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</script>
+<!-- 主题详情信息List模板Modal-->
+<script id="specList" type="text/html">
+    <div id="delSpecArr"></div>
+    <div class="goodsSeparated specDiv">
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-8">
+                <button class="btn btn-primary" type="button" data-operate="addSpec" style="float: left">添加主题详情</button>
+            </div>
+        </div>
+        <% for (var i = 0; i < specsArr.length; i++) { %>
+        <div class="goodsItemSeparated specItem" <% if(specsArr[i].status!=2){ %> style="background: #ffffff" <% }else{ %> style="background: lightgray" <% } %>>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-4">
+                    <h6>主题详情<span class="specNumber"><%= i+1 %></span>
+                    <% if(specsArr[i].status==2){ %>
+                        <span style="color: red" class="delStatus">【已删除】</span>
+                    <% } %>
+                    </h6>
+                </div>
+                <div class="col-8 iconDiv">
+                    <% if(specsArr[i].status!=2){ %>
+                    <span data-operate="delSpec" style="float: right;cursor: pointer" ><i class="icon fa fa-close"></i></span>
+                    <% }else{ %>
+                    <span data-operate="recoverSpec" style="float: right;cursor: pointer;border: 2px solid gray;border-radius: 50%;width: 28px;height: 28px;text-align: center;line-height: 26px;background: #ffffff" ><i class="icon fa fa-reply"></i></span>
+                    <% } %>
+                </div>
+            </div>
+            <input type="hidden" name="detail[][id]" <% if(specsArr[i].status==2){ %> disabled <% } %> class="specItemId" value="<%= specsArr[i].id %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-4">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">淘宝商品ID</span>
+                        </div>
+                        <input type="text" <% if(specsArr[i].status==2){ %> disabled <% } %> name="detail[][itemId]" placeholder="请输入淘宝商品ID" value="<%= specsArr[i].itemId %>" class="form-control">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">排序</span>
+                        </div>
+                        <input type="text" <% if(specsArr[i].status==2){ %> disabled <% } %> name="detail[][sort]" placeholder="请输入排序" value="<%= specsArr[i].sort %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="input-group">
+                        <% if(specsArr[i].itemStatus){ %>
+                        <span style="color: red;margin-top: 7px">【<%= specsArr[i].itemStatus  %>】</span>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div id="editor_<%= i+1 %>" class="editorDiv"></div>
+                    <input type="hidden" <% if(specsArr[i].status==2){ %> disabled <% } %> name="detail[][content]" value="<%= specsArr[i].content %>">
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</script>
+<!-- 主题详情信息item模板Modal-->
+<script id="specItem" type="text/html">
+    <div class="goodsItemSeparated specItem"  style="background: #ffffff">
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-4">
+                <h6>主题详情<span class="specNumber"></span></h6>
+            </div>
+            <div class="col-8">
+                <span data-operate="delSpec" style="float: right;cursor: pointer" ><i class="icon fa fa-close"></i></span>
+            </div>
+        </div>
+        <input type="hidden" name="detail[][id]">
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">淘宝商品ID</span>
+                    </div>
+                    <input type="text" name="detail[][itemId]" placeholder="请输入淘宝商品ID" value="" class="form-control">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">排序</span>
+                    </div>
+                    <input type="text" name="detail[][sort]" placeholder="请输入排序" value="" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-12">
+                <div id="editor" class="editorDiv"></div>
+                <input type="hidden" name="detail[][content]" value="">
+            </div>
+        </div>
+    </div>
+</script>

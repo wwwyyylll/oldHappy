@@ -1,0 +1,92 @@
+@@include('../../inc-header.html', {"title": "工具管理"})
+@@include('../../top-nav.html')
+@@include('../../left-nav.html')
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-th-list"></i> 工具管理</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+            <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item active"><a href="#">工具管理</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="row" style="margin-top: 10px">
+                    <!--数据表格modelBuilder.js-->
+                    <div class="col-lg-12" style="width: 97%">
+                        <ul class="nav nav-tabs">
+                            <li class="active titleName" style="height: 28px">
+                                <a href="#qh1" id="headerTab1" data-toggle="tab" style="outline:none;color: orange;cursor: pointer">搜索物料精选</a>
+                            </li>
+                            <li class="active" style="height: 28px">
+                                <a href="#qh2" id="headerTab2" data-toggle="tab" style="outline:none;cursor: pointer">签约淘宝淘口令</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tile-body" style="padding: 20px;border: 1px solid #dee2e6">
+                    <div class="tab-content" id="tabContent1">
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="btn-group  economy-wards" role="group" aria-label="Button group with nested dropdown">
+                                    <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
+                                    <button class="btn btn-secondary" type="button" id="selectsearchlabel">物料ID</button>
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item searchlabel" href="#">物料ID</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group" style="margin-left:5px">
+                                    <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="min-height: 600px">
+                            <textarea id="sampleTable" style="resize:vertical;min-height: 600px;display: none" class="form-control" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tabContent2" style="display: none">
+                        <form id="taobaoPwd" disabled="true">
+                            <div class="form-row" style="margin-bottom: 15px">
+                                <div class="col-7">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">更新时间</span>
+                                        </div>
+                                        <input id="updateTime" type="text" disabled class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 15px">
+                                <div class="col-7">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">淘口令</span>
+                                        </div>
+                                        <textarea id="pwd" name="pwd" style="resize:vertical;min-height: 100px;" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-7" style="padding-right: 5px">
+                                    <button class="btn btn-primary" type="button" data-operate="saveTaobaoPwd" style="float: right">保存</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script data-main="/public/js/module/tool/searchMaterial"></script>
+<script type="text/javascript" src="/public/js/plugins/moment.min.js"></script>
+<script type="text/javascript" src="/public/js/plugins/moment.js"></script>
+@@include('../../inc-footer.html')
+<script type="text/javascript" src="/public/js/plugins/daterangepicker.js"></script>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>支持CSS---软文</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .bigBox{
+            border:1px solid #000000;
+            padding:20px;
+            width: 30%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+        .row{
+            margin-bottom: 15px;
+        }
+        .blueColor{
+            color:blue;
+        }
+        .redColor{
+            color: red;
+        }
+        .bannerImg{
+            display: inline-block;
+            width: 100%;
+            height: 240px;
+        }
+        .goodsImg{
+            display: inline-block;
+            width: 100%;
+            height: 145px;
+        }
+        .referenceElement{
+            position: relative;
+        }
+        .height1{
+            height: 90px;
+        }
+        .logImg{
+            display: inline-block;
+            width: 90px;
+            height: 90px;
+            position: absolute;
+            left:0;right: 0;top:0;bottom:0;
+            margin: 0 auto;
+        }
+        .divider{
+            border-top: 1px solid #000000;
+        }
+        .fontPosition{
+            text-align: center;
+        }
+        .font1{
+            font-size: 20px;
+        }
+        .margin1{
+            margin-bottom: 30px;
+        }
+        .margin2{
+            margin-bottom: 50px;
+        }
+        .row1{
+            height: 160px;
+        }
+        .left{
+            width:30%;
+            float: left;
+        }
+        .right{
+            width:70%;
+            float: left;
+            padding:0 10px;
+            box-sizing: border-box;
+        }
+        .row2{
+            margin-bottom: 5px;
+        }
+        .fixRow{
+            height: 20px;
+        }
+        @media screen and (min-width: 1800px) {
+            .bigBox{
+                width: 30%;
+            }
+            .row2{
+                font-size: 15px;
+            }
+        }
+        /*适应PC端 宽度大于1400px*/
+        @media screen and (min-width: 1400px) and (max-width: 1800px)  {
+            .bigBox{
+                width: 30%;
+            }
+            .row2{
+                font-size: 13px;
+            }
+        }
+        /*适应pad端 宽度在640-1000之间*/
+        @media screen and (min-width: 640px) and (max-width: 1400px) {
+            .bigBox{
+                width: 50%;
+            }
+            .bannerImg{
+                height: 130px;
+            }
+            .left{
+                width:40%;
+            }
+            .right{
+                width: 60%;
+            }
+            .row2{
+                font-size: 10px;
+                height: 30px;
+                overflow: hidden;
+            }
+        }
+        /*适应移动端 宽度小于640*/
+        @media screen and (max-width: 639px){
+            .bigBox{
+                width: 100%;
+            }
+            .bannerImg{
+                height: 130px;
+            }
+            .left{
+                width:40%;
+            }
+            .right{
+                width: 60%;
+            }
+            .row2{
+                font-size: 10px;
+                height: 30px;
+                overflow: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="bigBox">
+    <div class="row">场次的标题 --- 李佳琦 2020年11月8日 直播场次商品列表</div>
+    <div class="row"><span class="blueColor">老乐惠</span>&nbsp;&nbsp;&nbsp;&nbsp;2020-08-27</div>
+    <div class="row">
+        <img src="./banner.png" class="bannerImg">
+    </div>
+    <div class="row">更多<span class="redColor">购物返利，奖金补贴，数据对接</span></div>
+    <div class="row">请访问官网：www.dhbiji.com</div>
+    <div class="row">微信小程序：老乐惠  |  微信公众号：老乐惠</div>
+    <div class="row divider"></div>
+    <div class="row fontPosition font1">本场商品列表</div>
+    <div class="row row1">
+        <div class="left">
+            <img src="./goodsImg.png" class="goodsImg">
+        </div>
+        <div class="right">
+            <div class="row2">商品名字商品名字商品名字商品名字商品名字商品名字商品名字商品名字商品名字</div>
+            <div class="row2 redColor fixRow">小标题小标题小标题小标题小标题小标题</div>
+            <div class="row2 blueColor">淘口令(请完整复制以下内容，打开淘宝APP)：</div>
+            <div class="row2">2.0復zhi口~令￥5I2ScPWF6LP￥回t~bao或點̸击̸琏接 https://m.tb.cn/h.4dRUgDk 至web</div>
+        </div>
+    </div>
+    <div class="row divider margin1"></div>
+    <div class="row fontPosition">本文内容属老乐惠整理，未经允许不得转载改链</div>
+    <div class="row fontPosition">更多<span class="redColor">购物返利，奖金补贴，数据对接</span></div>
+    <div class="row fontPosition">请访问官网：www.dhbiji.com</div>
+    <div class="row fontPosition">微信小程序：老乐惠</div>
+    <div class="row fontPosition margin2">微信公众号：老乐惠</div>
+    <div class="row referenceElement height1">
+        <img src="@@HOSTview/article/log.png" class="logImg">
+    </div>
+    <div class="row fontPosition">老乐惠，更多返利，为生活助力</div>
+</div>
+</body>
+</html>

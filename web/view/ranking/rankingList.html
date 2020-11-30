@@ -1,0 +1,389 @@
+@@include('../../inc-header.html', {"title": "排行榜管理"})
+@@include('../../top-nav.html')
+@@include('../../left-nav.html')
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-th-list"></i> 排行榜管理 </h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+            <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item active"><a href="#"> 排行榜管理 </a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="row" style="margin-bottom:20px ">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="display: none">
+                            <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
+                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">商品ID</button>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item searchlabel" href="#">商品ID</a>
+                                    <a class="dropdown-item searchlabel" href="#">淘宝商品ID</a>
+                                    <a class="dropdown-item searchlabel" href="#">标题</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-left:1%;display: none">
+                            <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                        </div>
+                        <div class="btn-group" style="float:right">
+                            <button id="addModal" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="outline:none;margin-left: 3px">新增</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile-body">
+                    <div class="table-responsive" style="min-height: 300px">
+                        <table class="table table-hover table-bordered" id="sampleTable"></table>
+                        <div id="visaPagination" class="d-flex justify-content-end">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- 列表模板 -->
+<script id="batchImportModal" type="text/html">
+    <form id="importExcelForm" disabled="true">
+        <h4 style="margin-bottom: 15px;color: red"><%= rankingTitle %></h4>
+        <div class="form-row uploadFileBatchDiv" style="margin-bottom: 15px">
+            <div class="col-7">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传文件</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="file" class="uploadFileBatch d-none">选择文件</label>
+                    <!--<button type="button" class="btn btn-default avatarUploadBatch" disabled>上传文件</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-12">
+                <div class="input-group">
+                    <h6 class="imgUrl"></h6>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
+<!-- title -->
+<script id="titleItem" type="text/html">
+    <%= rankingArr.title %>
+</script>
+<!-- 列表模板 -->
+<script id="visaListItem" type="text/html">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th style="width:15%;word-wrap: break-word;word-break:break-all;">标题</th>
+        <th>来源</th>
+        <th>排序</th>
+        <th>是否显示在榜单首页</th>
+        <th>是否显示在搜索首页+位置</th>
+        <th>首页标题图</th>
+        <th>首页背景图</th>
+        <th>商品列表页头部图</th>
+        <th>商品列表页背景颜色</th>
+        <th>分享小图</th>
+        <th style="width:8%;word-wrap: break-word;word-break:break-all;">备注</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= statusText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">无效</a>
+                </div>
+            </div>
+        </th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if (dataArr.length > 0) { %>
+    <% for (var i = 0; i < dataArr.length; i++) { %>
+    <tr data-id="<%= dataArr[i].id %>">
+        <td><%= dataArr[i].id %></td>
+        <td style="width:15%;word-wrap: break-word;word-break:break-all;"><%= dataArr[i].title %></td>
+        <td><%- dataArr[i].sourceText %></td>
+        <td><%= dataArr[i].sort %></td>
+        <td><%- dataArr[i].isShowRankingIndexText %></td>
+        <td>
+            <%- dataArr[i].isShowSearchIndexText %>
+            <% if(dataArr[i].isShowSearchIndex==1){ %>
+            <%- dataArr[i].showSearchIndexPositionText %>
+            <% } %>
+        </td>
+        <td style="background: #e2e2e2">
+            <% if(dataArr[i].indexTitlePic){ %>
+            <a href="<%= dataArr[i].indexTitlePic %>" target="_blank">
+                <img src="<%= dataArr[i].indexTitlePic%>" style="display: inline-block;width:100px;height: 50px">
+            </a>
+            <% } %>
+        </td>
+        <td>
+            <% if(dataArr[i].indexBackgroundPic){ %>
+            <a href="<%= dataArr[i].indexBackgroundPic %>" target="_blank">
+                <img src="<%= dataArr[i].indexBackgroundPic%>" style="display: inline-block;width:100px;height: 50px">
+            </a>
+            <% } %>
+        </td>
+        <td>
+            <% if(dataArr[i].listHeaderPic){ %>
+            <a href="<%= dataArr[i].listHeaderPic %>" target="_blank">
+                <img src="<%= dataArr[i].listHeaderPic%>" style="display: inline-block;width:100px;height: 50px">
+            </a>
+            <% } %>
+        </td>
+        <td><%= dataArr[i].listBackgroundColor %></td>
+        <td>
+            <% if(dataArr[i].sharePic){ %>
+            <a href="<%= dataArr[i].sharePic %>" target="_blank">
+                <img src="<%= dataArr[i].sharePic%>" style="display: inline-block;width:50px;height: 50px">
+            </a>
+            <% } %>
+        </td>
+        <td style="width:8%;word-wrap: break-word;word-break:break-all;"><%= dataArr[i].memo %></td>
+        <td><%- dataArr[i].statusText %></td>
+        <td><%= dataArr[i].createTime %></td>
+        <td>
+            <div class="d-flex flex-wrap justify-content-center">
+                <%- dataArr[i].materialButtonGroup %>
+            </div>
+        </td>
+    </tr>
+    <% } %>
+    <% } else { %>
+    <tr>
+        <td colspan="15">没有符合条件的记录</td>
+    </tr>
+    <% } %>
+    </tbody>
+</script>
+<!--Modal查看-->
+<script id="modalDiv" type="text/html">
+    <form id="visaPassportForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="id" value="<%= dataArr.id %>">
+            <% if(dataArr.id){ %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ID</span>
+                        </div>
+                        <input type="text" disabled value="<%= dataArr.id %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-9">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">标题</span>
+                        </div>
+                        <input type="text" name="title" placeholder="请输入标题" value="<%= dataArr.title %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">排序值</span>
+                        </div>
+                        <input type="text" name="sort" placeholder="请输入排序值" value="<%= dataArr.sort %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">来源</span>
+                        </div>
+                        <select name="source" class="form-control" required>
+                            <option value="">请选择</option>
+                            <option value="1" <% if(dataArr.source==1){ %> selected <% } %>>抖音</option>
+                            <option value="2" <% if(dataArr.source==2){ %> selected <% } %>>淘宝</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">商品列表页背景颜色</span>
+                        </div>
+                        <input type="text" name="listBackgroundColor" placeholder="请输入商品列表页背景颜色" value="<%= dataArr.listBackgroundColor %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">是否显示在榜单首页</span>
+                        </div>
+                        <select name="isShowRankingIndex" class="form-control">
+                            <option value="">请选择</option>
+                            <option value="1" <% if(dataArr.isShowRankingIndex==1){ %> selected <% } %>>是</option>
+                            <option value="2" <% if(dataArr.isShowRankingIndex==2){ %> selected <% } %>>否</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">是否显示在搜索首页</span>
+                        </div>
+                        <select name="isShowSearchIndex" class="form-control">
+                            <option value="">请选择</option>
+                            <option value="1" <% if(dataArr.isShowSearchIndex==1){ %> selected <% } %>>是</option>
+                            <option value="2" <% if(dataArr.isShowSearchIndex==2){ %> selected <% } %>>否</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6" <% if(dataArr.isShowSearchIndex==1){ %> style="display:block" <% }else{ %> style="display:none" <% } %>>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">搜索页广告位位置</span>
+                        </div>
+                        <select name="showSearchIndexPosition" class="form-control">
+                            <option value="">请选择</option>
+                            <option value="1" <% if(dataArr.showSearchIndexPosition==1){ %> selected <% } %>>左一</option>
+                            <option value="3" <% if(dataArr.showSearchIndexPosition==3){ %> selected <% } %>>左二</option>
+                            <option value="2" <% if(dataArr.showSearchIndexPosition==2){ %> selected <% } %>>右一</option>
+                            <option value="4" <% if(dataArr.showSearchIndexPosition==4){ %> selected <% } %>>右二</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">备注</span>
+                        </div>
+                        <input type="text" name="memo" placeholder="请输入备注" value="<%= dataArr.memo %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <!--<div class="form-row uploadFile" style="margin-bottom: 15px">-->
+                <!--<div class="input-group">-->
+                    <!--<span style="margin-top:6px;margin-right: 10px">上传首页ICON</span>-->
+                    <!--<label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>-->
+                    <!--<button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>-->
+                    <!--<span class="temporaryFile" style="display: none"></span>-->
+                    <!--<% if (dataArr.indexIcon) { %>-->
+                    <!--<h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">-->
+                        <!--<a target='_blank' href='<%= dataArr.indexIcon %>'>-->
+                            <!--<img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.indexIcon %>">-->
+                        <!--</a>-->
+                    <!--</h6>-->
+                    <!--<% } else { %>-->
+                    <!--<h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无首页ICON</span></h6>-->
+                    <!--<% } %>-->
+                    <!--&lt;!&ndash;<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的首页标题图的尺寸为315×214或者787×399）</h6>&ndash;&gt;-->
+                    <!--<input type="hidden" name="indexIcon" value="<%= dataArr.indexIcon %>">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传首页标题图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.indexTitlePic) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.indexTitlePic %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.indexTitlePic %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无首页标题图</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的首页标题图的尺寸为315×214或者787×399）</h6>-->
+                    <input type="hidden" name="indexTitlePic" value="<%= dataArr.indexTitlePic %>">
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传首页背景图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.indexBackgroundPic) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.indexBackgroundPic %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.indexBackgroundPic %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无首页背景图</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的商品封面图的尺寸为315×214或者787×399）</h6>-->
+                    <input type="hidden" name="indexBackgroundPic" value="<%= dataArr.indexBackgroundPic %>">
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传商品列表页头部图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.listHeaderPic) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.listHeaderPic %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.listHeaderPic %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无商品列表页头部图</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的商品封面图的尺寸为315×214或者787×399）</h6>-->
+                    <input type="hidden" name="listHeaderPic" value="<%= dataArr.listHeaderPic %>">
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传分享小图</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.sharePic) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.sharePic %>'>
+                            <img style="display: inline-block;width: 65px;height: 35px" src="<%= dataArr.sharePic %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无分享小图</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的商品封面图的尺寸为315×214或者787×399）</h6>-->
+                    <input type="hidden" name="sharePic" value="<%= dataArr.sharePic %>">
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">分享副标题</span>
+                        </div>
+                        <input type="text" name="shareSubTitle" placeholder="请输入分享副标题" value="<%= dataArr.shareSubTitle %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<script data-main="/public/js/module/ranking/rankingList"></script>
+<script type="text/javascript" src="/public/js/plugins/clipboard.min.js"></script>
+@@include('../../inc-footer.html')

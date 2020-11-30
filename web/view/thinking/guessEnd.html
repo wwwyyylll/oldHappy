@@ -1,0 +1,255 @@
+@@include('../../inc-header.html', {"title": "露头藏尾管理"})
+@@include('../../top-nav.html')
+@@include('../../left-nav.html')
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-th-list"></i> 露头藏尾管理</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+            <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item active"><a href="#">露头藏尾管理</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="row" style="margin-bottom:20px ">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
+                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">ID</button>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item searchlabel" href="#">ID</a>
+                                    <a class="dropdown-item searchlabel" href="#">标题</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-left:1%">
+                            <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                        </div>
+                        <div class="btn-group" style="float:right">
+                            <button id="addModal" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="outline:none;margin-left: 3px">新增</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable"></table>
+                        <div id="visaPagination" class="d-flex justify-content-end">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- 列表模板 -->
+<script id="visaListItem" type="text/html">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>标题</th>
+        <th>原视频</th>
+        <th>答案视频</th>
+        <th>选项</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= statusText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">无效</a>
+                </div>
+            </div>
+        </th>
+        <th>提交人</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if (dataArr.length > 0) { %>
+    <% for (var i = 0; i < dataArr.length; i++) { %>
+    <tr data-id="<%= dataArr[i].id %>">
+        <td><%= dataArr[i].id %></td>
+        <td><%= dataArr[i].title %></td>
+        <td>
+            <% if (dataArr[i].questionVideo) { %>
+            <a target="_blank" href="<%= dataArr[i].questionVideoUrl %>"><video src="<%= dataArr[i].questionVideoUrl %>" alt="" style="display: inline-block;width:50px;height: 100px"></video></a>
+            <% } else { %>
+            <span style="color:red">暂无原视频</span>
+            <% } %>
+        </td>
+        <td>
+            <% if (dataArr[i].answerVideo) { %>
+            <a target="_blank" href="<%= dataArr[i].answerVideoUrl %>"><video src="<%= dataArr[i].answerVideoUrl %>" alt="" style=" display: inline-block;width:50px;height: 100px"></video></a>
+            <% } else { %>
+            <span style="color:red">暂无答案视频</span>
+            <% } %>
+        </td>
+        <td>
+            <% for (var j = 0; j < dataArr[i].itemArr.length; j++) { %>
+            <div style="padding-left: 20%;text-align: left"><%- dataArr[i].itemArr[j].title + dataArr[i].itemArr[j].isAnswerText %></div>
+            <% } %>
+        </td>
+        <td><%- dataArr[i].statusText %></td>
+        <td><%= dataArr[i].operatorName %></td>
+        <td>
+            <div class="d-flex flex-wrap justify-content-center">
+                <%- dataArr[i].materialButtonGroup %>
+            </div>
+        </td>
+    </tr>
+    <% } %>
+    <% } else { %>
+    <tr>
+        <td colspan="9">没有符合条件的记录</td>
+    </tr>
+    <% } %>
+    </tbody>
+</script>
+<!--Modal新增,编辑，查看问题-->
+<script id="modalDiv" type="text/html">
+    <form id="visaPassportForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="id" value="<%= dataArr.id %>">
+            <% if (dataArr.id) { %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ID</span>
+                        </div>
+                        <input type="text" disabled value="<%= dataArr.id %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">标题</span>
+                        </div>
+                        <input type="text" name="title" placeholder="请输入标题" value="<%= dataArr.title %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">原视频链接</span>
+                        </div>
+                        <input type="text" name="questionVideo" placeholder="请输入原视频链接" value="<%= dataArr.questionVideo %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">答案视频链接</span>
+                        </div>
+                        <input type="text" name="answerVideo" placeholder="请输入答案视频链接" value="<%= dataArr.answerVideo %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <% if (dataArr.id) { %>
+            <% if (dataArr.questionVideo!="" && dataArr.answerVideo!="") { %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <h5 style="color: orange">原视频</h5>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <h5 style="color: orange">答案视频</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <video style="width:350px;height: 200px" src="<%= dataArr.questionVideoUrl %>" controls="controls">原视频</video>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <video style="width:350px;height: 200px" src="<%= dataArr.answerVideoUrl %>" controls="controls">答案视频</video>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% } %>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-3">
+                    <div class="input-group">
+                        <input type="button" class="btn btn-primary mark" data-operate="addSelect" style="outline:none" value="新增答案选项">
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="input-group">
+                        <h5 style="color: red;margin-top: 6px"></h5>
+                    </div>
+                </div>
+            </div>
+            <div id="itemSelectDiv">
+                <div id="delItemArr"></div>
+                <% for (var j = 0; j < itemArr.length; j++) { %>
+                <div class="form-row singItem" style="margin-bottom: 15px">
+                    <div class="col-9">
+                        <div class="input-group">
+                            <div class="custom-control custom-radio custom-control-inline" style="width: 100%;padding-left: 0">
+                                <span style="width: 110px">设置答案</span>
+                                <input data-operate="setAnswer" type="radio" id="order_<%= j %>" name="itemId" class="custom-control-input" value="1" <% if (itemArr[j].isAnswer==1) { %> checked <% }%> >
+                                <label style="width: 100%" class="custom-control-label" for="order_<%= j %>">
+                                    <input type="hidden" name="itemArr[][id]"  placeholder="" value="<%= itemArr[j].id %>" class="form-control">
+                                    <input type="text" name="itemArr[][title]" placeholder="" value="<%= itemArr[j].title %>" class="form-control">
+                                    <input type="hidden" name="itemArr[][isAnswer]"  placeholder="" value="<%= itemArr[j].isAnswer %>" class="form-control">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="input-group">
+                            <input type="button" class="btn btn-danger" data-operate="delSelect" style="outline:none;margin-right: 5px" value="删除">
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<script id="singItemDiv" type="text/html">
+    <div class="form-row singItem" style="margin-bottom: 15px">
+        <div class="col-9">
+            <div class="input-group">
+                <div class="custom-control custom-radio custom-control-inline" style="width: 100%;padding-left: 0">
+                    <span style="width: 110px">设置答案</span>
+                    <input data-operate="setAnswer" type="radio" id="order_1" name="itemId" class="custom-control-input" value="1">
+                    <label class="custom-control-label" for="order_1" style="width: 100%">
+                        <input type="hidden" name="itemArr[][id]"  placeholder="" value="" class="form-control">
+                        <input type="text" name="itemArr[][title]" placeholder="" value="" class="form-control">
+                        <input type="hidden" name="itemArr[][isAnswer]"  placeholder="" value="2" class="form-control">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="input-group">
+                <input type="button" class="btn btn-danger" data-operate="delSelect" style="outline:none;margin-right: 5px" value="删除">
+            </div>
+        </div>
+    </div>
+</script>
+<script data-main="/public/js/module/thinking/guessEnd"></script>
+@@include('../../inc-footer.html')

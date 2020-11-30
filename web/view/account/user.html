@@ -1,0 +1,328 @@
+@@include('../../inc-header.html', {"title": "会员管理"})
+@@include('../../top-nav.html')
+@@include('../../left-nav.html')
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-th-list"></i> 会员管理</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+            <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item active"><a href="#">会员管理</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="row" style="margin-bottom:20px ">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
+                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">会员ID</button>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item searchlabel" href="#">会员ID</a>
+                                    <a class="dropdown-item searchlabel" href="#">昵称</a>
+                                    <a class="dropdown-item searchlabel" href="#">会员运营Id</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-left:1%">
+                            <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                        </div>
+                        <div class="btn-group" style="float:right;display: none">
+                            <button id="addModal" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="outline:none;margin-left: 3px">新增</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable"></table>
+                        <div id="visaPagination" class="d-flex justify-content-end">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- 列表模板 -->
+<script id="visaListItem" type="text/html">
+    <thead>
+    <tr>
+        <th>会员ID</th>
+        <th>昵称</th>
+        <th>头像</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropTop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= sourceText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropTop" id="dropTopOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">微信</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">机器人</a>
+                </div>
+            </div>
+        </th>
+        <th>邀请码</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropTaobaoCommissionRate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= taobaoCommissionRateText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropTaobaoCommissionRate" id="dropTaobaoCommissionRateOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="desc">降序</a>
+                    <a class="dropdown-item" href="javascript:" data-id="asc">升序</a>
+                </div>
+            </div>
+        </th>
+        <th>是否分销商</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropCanRecommend" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= canRecommendText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropCanRecommend" id="dropCanRecommendOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">是</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">否</a>
+                </div>
+            </div>
+        </th>
+        <th>会员运营Id</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropSignUp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= signUpText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropSignUp" id="dropSignUpOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">是</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">否</a>
+                </div>
+            </div>
+        </th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= statusText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">允许登录</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">禁止登录</a>
+                </div>
+            </div>
+        </th>
+        <th>注册日期</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if (dataArr.length > 0) { %>
+    <% for (var i = 0; i < dataArr.length; i++) { %>
+    <tr data-id="<%= dataArr[i].id %>">
+        <td><%= dataArr[i].id %></td>
+        <td>
+            <a style="text-decoration: underline" target="_blank" href="@@HOSTview/account/userDetailsLook.html?id=<%= dataArr[i].id %>"><%= dataArr[i].nickName %></a>
+            <% if(dataArr[i].alias){ %>
+            <div style="margin-top: 5px;color: coral"><%= dataArr[i].alias %></div>
+            <% } %>
+        </td>
+        <td>
+            <% if(dataArr[i].avatar){ %>
+            <a href="<%= dataArr[i].avatar %>">
+                <img src="<%= dataArr[i].avatar %>" style="display: inline-block;width:50px;height: 50px;">
+            </a>
+            <% } %>
+        </td>
+        <td><%- dataArr[i].sourceText %></td>
+        <td><%= dataArr[i].inviteCode %></td>
+        <td><%= dataArr[i].taobaoCommissionRate %></td>
+        <td><%- dataArr[i].isDistributorsText %></td>
+        <td><%- dataArr[i].canRecommendTaobaoItemText %></td>
+        <td><%= dataArr[i].memberOperationId %></td>
+        <td><%- dataArr[i].isSignUpText %></td>
+        <td><%- dataArr[i].statusText %></td>
+        <td><%= dataArr[i].createTime %></td>
+        <td>
+            <div class="d-flex flex-wrap justify-content-center">
+                <button class="btn btn-primary" type="button" data-operate="edit">编辑</button>
+                <a target="_blank" href="@@HOSTview/account/userDetailsLook.html?id=<%= dataArr[i].id %>" class="btn btn-info">查看详情</a>
+                <%- dataArr[i].materialButtonGroup %>
+            </div>
+        </td>
+    </tr>
+    <% } %>
+    <% } else { %>
+    <tr>
+        <td colspan="10">没有符合条件的记录</td>
+    </tr>
+    <% } %>
+    </tbody>
+</script>
+<!--Modal查看用户信息-->
+<script id="modalDiv" type="text/html">
+    <form id="visaPassportForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="id" value="<%= dataArr.id %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">昵称</span>
+                        </div>
+                        <input type="text" name="nickName" placeholder="请输入昵称" value="<%= dataArr.nickName %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">别名</span>
+                        </div>
+                        <input type="text" name="alias" placeholder="请输入别名" value="<%= dataArr.alias %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">邀请码</span>
+                        </div>
+                        <input type="text" name="inviteCode" placeholder="请输入邀请码" value="<%= dataArr.inviteCode %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row uploadFile" style="margin-bottom: 15px">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传头像</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar" class="uploadImg d-none">选择图片文件</label>
+                    <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
+                    <span class="temporaryFile" style="display: none"></span>
+                    <% if (dataArr.avatar) { %>
+                    <h6 style="margin-left: 10px;margin-bottom: 0" class="imgUrl">
+                        <a target='_blank' href='<%= dataArr.avatar %>'>
+                            <img style="display: inline-block;width: 35px;height: 35px" src="<%= dataArr.avatar %>">
+                        </a>
+                    </h6>
+                    <% } else { %>
+                    <h6 style="margin-top: 9px;margin-left: 10px" class="imgUrl"><span style="color:red">暂无头像</span></h6>
+                    <% } %>
+                    <!--<h6 style="color: red;margin-top: 9px;margin-left: 10px">（提示：上传的商品封面图的尺寸为315×214或者787×399）</h6>-->
+                    <input type="hidden" name="avatar" value="<%= dataArr.avatar %>">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<!--Modal关进警察局-->
+<script id="modalPoliceDiv" type="text/html">
+    <form id="policeForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="userId" value="<%= dataArr.userId %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-8">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">罪名</span>
+                        </div>
+                        <input type="text" name="charge" placeholder="请输入关押罪名" value="<%= dataArr.charge %>" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">关押天数</span>
+                        </div>
+                        <input type="text" name="day" placeholder="请输入关押天数" value="<%= dataArr.day %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<!--Modal机器人充值能量-->
+<script id="modalRobotDiv" type="text/html">
+    <form id="robotForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="id" value="<%= dataArr.id %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">充能量值</span>
+                        </div>
+                        <input type="text" name="energy" placeholder="请输入能量值" value="<%= dataArr.energy %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<!--Moda设为分销商-->
+<script id="addDistDiv" type="text/html">
+    <form id="addDistForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="userId" value="<%= dataArr.userId %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">会员ID</span>
+                        </div>
+                        <input type="text" disabled value="<%= dataArr.userId %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">会员昵称</span>
+                        </div>
+                        <input type="text" disabled value="<%= dataArr.nickName %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">分销商名称</span>
+                        </div>
+                        <input type="text" name="name" placeholder="请输入分销商名称" value="<%= dataArr.name %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">推广位</span>
+                        </div>
+                        <input type="text" name="adZoneId" placeholder="请输入推广位ID" value="<%= dataArr.adZoneId %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">备注</span>
+                        </div>
+                        <input type="text" name="content" placeholder="请输入备注" value="<%= dataArr.content %>" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<script data-main="/public/js/module/account/user"></script>
+@@include('../../inc-footer.html')
