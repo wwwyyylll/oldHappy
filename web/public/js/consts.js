@@ -218,9 +218,14 @@ define("consts", function() {
                 '2':'<span style="color:darkorange"> 左下角</span>',
                 '3':'<span style="color:blue"> 头二</span>'
             },
+            cardType:{
+                '1':'<span style="color:green"> 纯文字</span>',
+                '2':'<span style="color:darkorange"> 图文</span>',
+                '3':'<span style="color:blue"> 视频</span>'
+            },
             imageType:{
-                '1':'<span style="color:orange"> 内测</span>',
-                '2':'<span style="color:green"> 供会员使用</span>'
+                '1':'<span style="color:orange"> 横板</span>',
+                '2':'<span style="color:green"> 竖版</span>'
             },
             taskType:{
                 '1':'加入淘宝返佣计划',

@@ -1,13 +1,13 @@
 define("common", ["consts", "apis", "utils"], function(consts, apis, utils) {
     //检验此时是否登录
-    utils.ajaxSubmit(apis.login.isLogin,'',function(data){
-        if(data.userToken==''){
-            window.location.href = "@@HOSTlogin.html";
-        }else{
-            $(".app-sidebar__user-name").text(data.userName);
-            $(".app-sidebar__user-designation").text(data.roleName);
-        }
-    });
+    //utils.ajaxSubmit(apis.login.isLogin,'',function(data){
+    //    if(data.userToken==''){
+    //        window.location.href = "@@HOSTlogin.html";
+    //    }else{
+    //        $(".app-sidebar__user-name").text(data.userName);
+    //        $(".app-sidebar__user-designation").text(data.roleName);
+    //    }
+    //});
     //退出登录
     $("#logout").on("click",function(){
         //$.removeCookie("userName",{ path: '/'});
@@ -28,7 +28,7 @@ define("common", ["consts", "apis", "utils"], function(consts, apis, utils) {
             }
         });
     }
-    warnList();
+    //warnList();
     //获取排行榜的管理tag
     function getRankingList(){
         var rankParam = {
@@ -67,7 +67,7 @@ define("common", ["consts", "apis", "utils"], function(consts, apis, utils) {
             }
         });
     }
-    getRankingList();
+    //getRankingList();
     //打开的对应的页面nav + active属性
     var currentUrl = window.location.href;
     var itemArr = $(".common-item");
@@ -225,5 +225,5 @@ define("common", ["consts", "apis", "utils"], function(consts, apis, utils) {
             }
         })
     }
-    getMenuLists1();
+    //getMenuLists1();
 });
