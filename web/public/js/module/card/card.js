@@ -112,7 +112,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         utils.renderModal('新增卡片', template('modalDiv',initialData), function(){
             if($("#visaPassportForm").valid()){
                 utils.loading(true);
-                utils.ajaxSubmit(apis.taobaoPopularizeImages.create,$("#visaPassportForm").serialize(),function(data){
+                utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                     utils.loading(false);
                     hound.success("添加成功","",1000);
                     utils.modal.modal('hide');
@@ -130,14 +130,14 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         //编辑
         edit:function($this){
             var id = $this.closest("tr").attr("data-id");
-            utils.ajaxSubmit(apis.taobaoPopularizeImages.getById, {id: id}, function (data) {
+            utils.ajaxSubmit(apis.joy.view, {id: id}, function (data) {
                 var getByIdData = {
                     dataArr:data
                 };
-                utils.renderModal('编辑海报', template('modalDiv', getByIdData), function(){
+                utils.renderModal('编辑卡片', template('modalDiv', getByIdData), function(){
                     if($("#visaPassportForm").valid()) {
                         utils.loading(true);
-                        utils.ajaxSubmit(apis.taobaoPopularizeImages.updateById, $("#visaPassportForm").serialize(), function (data) {
+                        utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                             utils.loading(false);
                             hound.success("编辑成功", "", 1000);
                             utils.modal.modal('hide');
@@ -146,16 +146,17 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     }
                 }, 'lg');
                 uploadFile();
+                typeChange();
             });
         },
         //查看
         look:function($this){
             var id = $this.closest("tr").attr("data-id");
-            utils.ajaxSubmit(apis.taobaoPopularizeImages.getById, {id: id}, function (data) {
+            utils.ajaxSubmit(apis.joy.view, {id: id}, function (data) {
                 var getByIdData = {
                     dataArr:data
                 };
-                utils.renderModal('查看海报', template('modalDiv', getByIdData),'', 'lg');
+                utils.renderModal('查看卡片', template('modalDiv', getByIdData),'', 'lg');
                 $("#visaPassportForm").append($("fieldset").prop('disabled', true));
             });
         },
@@ -163,7 +164,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         setOff:function($this){
             var id = $this.closest("tr").attr("data-id");
             hound.confirm('确认无效吗?', '', function () {
-                utils.ajaxSubmit(apis.taobaoPopularizeImages.offById, {id: id}, function (data) {
+                utils.ajaxSubmit(apis.joy.offById, {id: id}, function (data) {
                     loadData();
                 });
             });
@@ -172,7 +173,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         setOn:function($this){
             var id = $this.closest("tr").attr("data-id");
             hound.confirm('确认有效吗?', '', function () {
-                utils.ajaxSubmit(apis.taobaoPopularizeImages.onById, {id: id}, function (data) {
+                utils.ajaxSubmit(apis.joy.onById, {id: id}, function (data) {
                     loadData();
                 });
             });
@@ -181,33 +182,24 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
 
     var param = {
         pageNo: 1,
-        pageSize:10,
+        pageSize:20,
         status:''
     };
 
     function loadData() {
-        //utils.ajaxSubmit(apis.taobaoPopularizeImages.getLists, param, function (data) {
-            var data = {
-                dataArr:[{
-                    id:1,
-                    type:1,
-                    imageType:1,
-                    pic:'',
-                    content:'假的假的假的假的',
-                    videoUrl:'https//:baidu.com'
-                }]
-            };
-            $.each(data.dataArr,function(i,n){
+        utils.ajaxSubmit(apis.joy.index, param, function (data) {
+            $.each(data.list,function(i,n){
+                n.statusText = consts.status.ordinary[n.status];
                 n.typeText = consts.status.cardType[n.type];
-                n.imageTypeText = consts.status.imageType[n.imageType];
-                n.materialButtonGroup = comButtons + stopButton;
+                n.imageTypeText = consts.status.imageType[n.img_type];
+                n.materialButtonGroup = comButtons ;
                 //(n.status=="1")? n.materialButtonGroup = comButtons + stopButton : n.materialButtonGroup = comButtons + startBouutn ;
             });
             //data.statusText = listDropDown.statusText;
             $sampleTable.html(template('visaListItem', data));
-            //utils.bindPagination($visaPagination, param, loadData);
-            //$visaPagination.html(utils.pagination(parseInt(data.cnt), param.pageNo));
-        //});
+            utils.bindPagination($visaPagination, param, loadData);
+            $visaPagination.html(utils.pagination(parseInt(data.count), param.pageNo));
+        });
     }
     // 页面首次加载列表数据
     loadData();
