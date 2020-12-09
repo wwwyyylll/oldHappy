@@ -51,27 +51,71 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>卡片格式</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= typeText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropType" id="dropTypeOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">纯文字</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">图文</a>
+                    <a class="dropdown-item" href="javascript:" data-id="3">视频</a>
+                </div>
+            </div>
+        </th>
         <th>图片格式</th>
         <th>图片</th>
         <th style="width:20%;word-wrap: break-word;word-break:break-all;">文字内容</th>
         <th style="width:15%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
-        <!--<th class="em-min-7">-->
-            <!--<div class="dropdown">-->
-                <!--<span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                    <!--<%= statusText %>-->
-                <!--</span>-->
-                <!--<div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">-->
-                    <!--<a class="dropdown-item" href="javascript:" data-id="">所有</a>-->
-                    <!--<a class="dropdown-item" href="javascript:" data-id="1">有效</a>-->
-                    <!--<a class="dropdown-item" href="javascript:" data-id="-1">无效</a>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</th>-->
-        <th>有效阅读数</th>
-        <th>收藏数</th>
-        <th>点赞数</th>
-        <th>状态</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropRead" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= readText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropRead" id="dropReadOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="asc">升序</a>
+                    <a class="dropdown-item" href="javascript:" data-id="desc">降序</a>
+                </div>
+            </div>
+        </th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropFavorite" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= favoriteText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropFavorite" id="dropFavoriteOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="asc">升序</a>
+                    <a class="dropdown-item" href="javascript:" data-id="desc">降序</a>
+                </div>
+            </div>
+        </th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropPraise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= praiseText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropPraise" id="dropPraiseOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="asc">升序</a>
+                    <a class="dropdown-item" href="javascript:" data-id="desc">降序</a>
+                </div>
+            </div>
+        </th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= statusText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
+                <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
+                <a class="dropdown-item" href="javascript:" data-id="-1">无效</a>
+                </div>
+            </div>
+        </th>
         <th>操作</th>
     </tr>
     </thead>
@@ -106,7 +150,7 @@
     <% } %>
     <% } else { %>
     <tr>
-        <td colspan="9">没有符合条件的记录</td>
+        <td colspan="11">没有符合条件的记录</td>
     </tr>
     <% } %>
     </tbody>

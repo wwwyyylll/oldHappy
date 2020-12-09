@@ -183,7 +183,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     var param = {
         pageNo: 1,
         pageSize:20,
-        status:''
+        type:'',
+        status:'',
+        sortByRead:'',
+        sortByfavorite:'',
+        sortBypraise:''
     };
 
     function loadData() {
@@ -195,7 +199,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 n.materialButtonGroup = comButtons ;
                 //(n.status=="1")? n.materialButtonGroup = comButtons + stopButton : n.materialButtonGroup = comButtons + startBouutn ;
             });
-            //data.statusText = listDropDown.statusText;
+            data.typeText = listDropDown.typeText;
+            data.statusText = listDropDown.statusText;
+            data.readText = listDropDown.readText;
+            data.favoriteText = listDropDown.favoriteText;
+            data.praiseText = listDropDown.praiseText;
             $sampleTable.html(template('visaListItem', data));
             utils.bindPagination($visaPagination, param, loadData);
             $visaPagination.html(utils.pagination(parseInt(data.count), param.pageNo));
@@ -206,12 +214,42 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     utils.bindList($(document), operates);
     //列表筛选事件绑定
     var listDropDown = {
-        statusText:'状态'
+        typeText:'卡片格式',
+        statusText:'状态',
+        readText:'有效阅读数',
+        favoriteText:'收藏数',
+        praiseText:'点赞数'
     };
-    $sampleTable.on('click', '#dropStatusOptions a[data-id]', function () {
+    $sampleTable.on('click', '#dropTypeOptions a[data-id]', function () {
+        param.type = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.typeText = "卡片格式" : listDropDown.typeText = $(this).text();
+        param.pageNo = 1;
+        loadData();
+    }).on('click', '#dropStatusOptions a[data-id]', function () {
         param.status = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.statusText = "状态" : listDropDown.statusText = $(this).text();
         param.pageNo = 1;
+        loadData();
+    }).on('click', '#dropReadOptions a[data-id]', function () {
+        param.sortByRead = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.readText = "有效阅读数" : listDropDown.readText = $(this).text();
+        param.pageNo = 1;
+        param.sortByfavorite = '';listDropDown.favoriteText = "收藏数";
+        param.sortBypraise = '';  listDropDown.praiseText = "点赞数";
+        loadData();
+    }).on('click', '#dropFavoriteOptions a[data-id]', function () {
+        param.sortByfavorite = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.favoriteText = "收藏数" : listDropDown.favoriteText = $(this).text();
+        param.pageNo = 1;
+        param.sortByRead = '';listDropDown.readText = "有效阅读数";
+        param.sortBypraise = '';  listDropDown.praiseText = "点赞数";
+        loadData();
+    }).on('click', '#dropPraiseOptions a[data-id]', function () {
+        param.sortBypraise = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.praiseText = "点赞数" : listDropDown.praiseText = $(this).text();
+        param.pageNo = 1;
+        param.sortByRead = '';listDropDown.readText = "有效阅读数";
+        param.sortByfavorite = '';listDropDown.favoriteText = "收藏数";
         loadData();
     });
     $("#search").on("click",function(){
