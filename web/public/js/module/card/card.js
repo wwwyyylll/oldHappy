@@ -73,7 +73,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     $(".imgUrl").html("");
                     $(".imgUrl").html("<a target='_blank' href='"+ res.result +"'><img style='display: inline-block;width: 100px;height: 33px' src='"+ res.result +"'></a>");
                     $(".imgUrl").css({marginTop:0});
-                    $("input[name=pic]").val(res.result);
+                    $("input[name=img_url]").val(res.result);
                 }
             }).fail(function (jqXHR, textStatus) {
                 hound.error('Request failed: ' + textStatus);

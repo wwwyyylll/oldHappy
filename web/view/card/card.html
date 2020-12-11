@@ -202,15 +202,15 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row uploadFile type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
-                <div class="col-5">
+            <div class="form-row uploadFile type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block;height:37px" <% }else{ %> style="margin-bottom: 15px;display: none;height:37px" <% } %>>
+                <div class="col-5" style="float: left">
                     <div class="input-group">
                         <span style="margin-top:6px;margin-right: 10px">上传图片</span>
                         <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar1" class="uploadImg d-none">选择图片文件</label>
                         <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
                     </div>
                 </div>
-                <div class="col-7">
+                <div class="col-7" style="float: left">
                     <div class="input-group">
                         <% if (dataArr.img_url) { %>
                         <h6 class="imgUrl">
