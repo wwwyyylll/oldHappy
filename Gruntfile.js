@@ -31,8 +31,8 @@ module.exports = function(grunt) {
                     wwwroot: './',
                     globals: {
                         SITE: '老乐惠',
-                        HOST: 'http://console.dhbiji.com/',
-                        API: 'http://api.dhbiji.com/api/console/b.php',
+                        HOST: 'http://console.laolehui.com.cn/',
+                        API: 'https://api.laolehui.com.cn/api/console/b.php',
                         HTML: '.html',
                         DEBUG: 0,
                         BUILD: new Date().getTime()
@@ -198,7 +198,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: '<%= config.dist %>',
                     src: ['**/*', '!**/inc-*.html'],
-                    dest: '<%= config.dist %>/../../console-dhbiji/'
+                    dest: '<%= config.dist %>/../../console-laolehui/'
                 }]
             }
         },
