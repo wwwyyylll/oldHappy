@@ -67,7 +67,8 @@
         <th>图片格式</th>
         <th>图片</th>
         <th style="width:20%;word-wrap: break-word;word-break:break-all;">文字内容</th>
-        <th style="width:15%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
+        <th style="width:12%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
+        <th style="width:12%;word-wrap: break-word;word-break:break-all;">商品链接地址</th>
         <th class="em-min-7">
             <div class="dropdown">
                 <span class="dropdown-toggle" id="dropRead" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -136,7 +137,8 @@
             <% } %>
         </td>
         <td style="width:20%;word-wrap: break-word;word-break:break-all;"><%= list[i].content %></td>
-        <td style="width:15%;word-wrap: break-word;word-break:break-all;"><%= list[i].video_url %></td>
+        <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].video_url %></td>
+        <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].goods_url %></td>
         <td><%= list[i].read %></td>
         <td><%= list[i].favorite %></td>
         <td><%= list[i].praise %></td>
@@ -242,6 +244,16 @@
                             <span class="input-group-text">视频链接地址</span>
                         </div>
                         <input type="text" name="video_url" placeholder="请输入视频链接地址" value="<%= dataArr.video_url %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row type3" <% if(dataArr.type==3){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">商品链接地址</span>
+                        </div>
+                        <input type="text" name="goods_url" placeholder="请输入商品链接地址" value="<%= dataArr.goods_url %>" class="form-control">
                     </div>
                 </div>
             </div>
