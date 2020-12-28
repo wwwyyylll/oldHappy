@@ -68,7 +68,7 @@
         <th>图片</th>
         <th style="width:20%;word-wrap: break-word;word-break:break-all;">文字内容</th>
         <th style="width:12%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
-        <th style="width:12%;word-wrap: break-word;word-break:break-all;">商品链接地址</th>
+        <!--<th style="width:12%;word-wrap: break-word;word-break:break-all;">商品链接地址</th>-->
         <th class="em-min-7">
             <div class="dropdown">
                 <span class="dropdown-toggle" id="dropRead" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -138,7 +138,7 @@
         </td>
         <td style="width:20%;word-wrap: break-word;word-break:break-all;"><%= list[i].content %></td>
         <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].video_url %></td>
-        <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].goods_url %></td>
+        <!--<td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].goods_url %></td>-->
         <td><%= list[i].read %></td>
         <td><%= list[i].favorite %></td>
         <td><%= list[i].praise %></td>
@@ -204,30 +204,36 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row uploadFile type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block;height:37px" <% }else{ %> style="margin-bottom: 15px;display: none;height:37px" <% } %>>
-                <div class="col-5" style="float: left">
-                    <div class="input-group">
-                        <span style="margin-top:6px;margin-right: 10px">上传图片</span>
-                        <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar1" class="uploadImg d-none">选择图片文件</label>
-                        <button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>
-                    </div>
-                </div>
-                <div class="col-7" style="float: left">
-                    <div class="input-group">
-                        <% if (dataArr.img_url) { %>
-                        <h6 class="imgUrl">
-                            <a target='_blank' href='<%= dataArr.img_url %>'>
-                                <img src="<%= dataArr.img_url %>" style="display: inline-block;width:100px;height: 33px;">
-                            </a>
-                        </h6>
-                        <% } else { %>
-                        <h6 style="margin-top: 9px" class="imgUrl"><span style="color:red">暂无图片</span></h6>
-                        <% } %>
-                        <input type="hidden" name="img_url" value="<%= dataArr.img_url %>">
-                    </div>
+            <!--<div class="form-row uploadFile type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block;height:37px" <% }else{ %> style="margin-bottom: 15px;display: none;height:37px" <% } %>>-->
+                <!--<div class="col-5" style="float: left">-->
+                    <!--<div class="input-group">-->
+                        <!--<span style="margin-top:6px;margin-right: 10px">上传图片</span>-->
+                        <!--<label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="avatar1" class="uploadImg d-none">选择图片文件</label>-->
+                        <!--<button type="button" class="btn btn-default avatarUpload" disabled>上传文件</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-7" style="float: left">-->
+                    <!--<div class="input-group">-->
+                        <!--<% if (dataArr.img_url) { %>-->
+                        <!--<h6 class="imgUrl">-->
+                            <!--<a target='_blank' href='<%= dataArr.img_url %>'>-->
+                                <!--<img src="<%= dataArr.img_url %>" style="display: inline-block;width:100px;height: 33px;">-->
+                            <!--</a>-->
+                        <!--</h6>-->
+                        <!--<% } else { %>-->
+                        <!--<h6 style="margin-top: 9px" class="imgUrl"><span style="color:red">暂无图片</span></h6>-->
+                        <!--<% } %>-->
+                        <!--<input type="hidden" name="img_url" value="<%= dataArr.img_url %>">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-row type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
+                <div class="col-12">
+                    <div id="editor" class="editorDiv"></div>
+                    <input type="hidden" name="graphic" value="<%= dataArr.graphic %>">
                 </div>
             </div>
-            <div class="form-row type1" <% if(dataArr.type==1 || dataArr.type==2){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
+            <div class="form-row type1" <% if(dataArr.type==1){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
                 <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -247,18 +253,21 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row type3" <% if(dataArr.type==3){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
-                <div class="col-12">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">商品链接地址</span>
-                        </div>
-                        <input type="text" name="goods_url" placeholder="请输入商品链接地址" value="<%= dataArr.goods_url %>" class="form-control">
-                    </div>
-                </div>
-            </div>
+            <!--<div class="form-row type3" <% if(dataArr.type==3){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>-->
+                <!--<div class="col-12">-->
+                    <!--<div class="input-group">-->
+                        <!--<div class="input-group-prepend">-->
+                            <!--<span class="input-group-text">商品链接地址</span>-->
+                        <!--</div>-->
+                        <!--<input type="text" name="goods_url" placeholder="请输入商品链接地址" value="<%= dataArr.goods_url %>" class="form-control">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </fieldset>
     </form>
 </script>
 <script data-main="/public/js/module/card/card"></script>
+<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
+<script type="text/javascript" src="/public/js/plugins/wangeditor/release/wangEditor.min.js"></script>
 @@include('../../inc-footer.html')
+<script type="text/javascript" src="/public/js/plugins/jquery-ui-1.10.4.min.js"></script>

@@ -89,7 +89,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 $(".type2").hide();
                 $(".type3").hide();
             }else if(value==2){
-                $(".type1").show();
+                $(".type1").hide();
                 $(".type2").show();
                 $(".type3").hide();
             }else if(value==3){
@@ -107,20 +107,108 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     //新增
     $addModal.on("click",function(){
         var initialData = {
-            dataArr:{}
+            dataArr:{
+                status:1
+            }
         };
         utils.renderModal('新增卡片', template('modalDiv',initialData), function(){
-            if($("#visaPassportForm").valid()){
-                utils.loading(true);
-                utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
-                    utils.loading(false);
-                    hound.success("添加成功","",1000);
-                    utils.modal.modal('hide');
-                    param.pageNo = 1;
-                    loadData();
-                })
+            var editerContent = $(".w-e-text");
+            var editerImg = editerContent.find("img");
+            //统计富文本编辑器中图片的数量
+            if(editerImg.length>0){
+                //图片src的长度大于500的需要上传，小于500的直接提交
+                var submitImgArr = [];
+                for(var i=0;i<editerImg.length;i++){
+                    if(editerImg.eq(i).attr("src").length>500){
+                        submitImgArr.push(editerImg.eq(i));
+                    }
+                }
+
+                function func_digui(arry,len){
+                    var temp;
+                    for(i=0;i<len;i++){
+                        if(i==0){
+                            temp =arry[0];
+                            arry.splice(i,1);
+                            $.ajax({
+                                type:'POST',
+                                url: "@@API",
+                                data: {
+                                    c:"img",
+                                    a:"uploadForBase64",
+                                    linkUserName:consts.param.linkUserName,
+                                    linkPassword:consts.param.linkPassword,
+                                    signature:consts.param.signature,
+                                    userToken: $.cookie('userToken'),
+                                    content:temp.attr("src")
+                                },
+                                dataType: 'json',
+                                success:function(data){
+                                    temp.attr("src",data.result);
+                                    len = arry.length;
+                                    if(len ==0){
+                                        return;
+                                    }
+                                    func_digui(arry,len);
+                                }
+                            });
+                        }
+                    }
+                }
+                if(submitImgArr.length!=0){
+                    func_digui(submitImgArr,submitImgArr.length);
+                    setTimeout(function(){
+                        var canPost = true;
+                        for(var i=0;i<editerImg.length;i++){
+                            if(editerImg.eq(i).attr("src").length>500){
+                                canPost = false;
+                                break;
+                            }
+                        }
+                        if(canPost){
+                            if($("#visaPassportForm").valid()){
+                                $("input[name=graphic]").val($(".w-e-text").html());
+                                utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
+                                    hound.success("添加成功","",1000);
+                                    utils.modal.modal('hide');
+                                    param.pageNo = 1;
+                                    loadData();
+                                })
+                            }
+                        }
+                    },1500);
+                }else{
+                    if($("#visaPassportForm").valid()){
+                        $("input[name=graphic]").val($(".w-e-text").html());
+                        utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
+                            hound.success("添加成功","",1000);
+                            utils.modal.modal('hide');
+                            param.pageNo = 1;
+                            loadData();
+                        })
+                    }
+                }
+            }else{
+                if($("#visaPassportForm").valid()){
+                    $("input[name=graphic]").val($(".w-e-text").html());
+                    utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
+                        hound.success("添加成功","",1000);
+                        utils.modal.modal('hide');
+                        param.pageNo = 1;
+                        loadData();
+                    })
+                }
             }
+
         }, 'lg');
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        editor.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+        editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+        editor.create();
+        $(".w-e-text-container").css({"height":"500px"});
+        $(".w-e-text-container").css({"z-index":"100"});
+        $("#editor").find(".w-e-menu").css({"z-index":"101"});
         uploadFile();
         typeChange();
     });
@@ -135,16 +223,101 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     dataArr:data
                 };
                 utils.renderModal('编辑卡片', template('modalDiv', getByIdData), function(){
-                    if($("#visaPassportForm").valid()) {
-                        utils.loading(true);
-                        utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
-                            utils.loading(false);
-                            hound.success("编辑成功", "", 1000);
-                            utils.modal.modal('hide');
-                            loadData();
-                        })
+                    var editerContent = $(".w-e-text");
+                    var editerImg = editerContent.find("img");
+                    //统计富文本编辑器中图片的数量
+                    if(editerImg.length>0){
+                        //图片src的长度大于500的需要上传，小于500的直接提交
+                        var submitImgArr = [];
+                        for(var i=0;i<editerImg.length;i++){
+                            if(editerImg.eq(i).attr("src").length>500){
+                                submitImgArr.push(editerImg.eq(i));
+                            }
+                        }
+
+                        function func_digui(arry,len){
+                            var temp;
+                            for(i=0;i<len;i++){
+                                if(i==0){
+                                    temp =arry[0];
+                                    arry.splice(i,1);
+                                    $.ajax({
+                                        type:'POST',
+                                        url: "@@API",
+                                        data: {
+                                            c:"img",
+                                            a:"uploadForBase64",
+                                            linkUserName:consts.param.linkUserName,
+                                            linkPassword:consts.param.linkPassword,
+                                            signature:consts.param.signature,
+                                            userToken: $.cookie('userToken'),
+                                            content:temp.attr("src")
+                                        },
+                                        dataType: 'json',
+                                        success:function(data){
+                                            temp.attr("src",data.result);
+                                            len = arry.length;
+                                            if(len ==0){
+                                                return;
+                                            }
+                                            func_digui(arry,len);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        if(submitImgArr.length!=0){
+                            func_digui(submitImgArr,submitImgArr.length);
+                            setTimeout(function(){
+                                var canPost = true;
+                                for(var i=0;i<editerImg.length;i++){
+                                    if(editerImg.eq(i).attr("src").length>500){
+                                        canPost = false;
+                                        break;
+                                    }
+                                }
+                                if(canPost){
+                                    if($("#visaPassportForm").valid()) {
+                                        $("input[name=graphic]").val($(".w-e-text").html());
+                                        utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
+                                            hound.success("编辑成功", "", 1000);
+                                            utils.modal.modal('hide');
+                                            loadData();
+                                        })
+                                    }
+                                }
+                            },1500);
+                        }else{
+                            if($("#visaPassportForm").valid()) {
+                                $("input[name=graphic]").val($(".w-e-text").html());
+                                utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
+                                    hound.success("编辑成功", "", 1000);
+                                    utils.modal.modal('hide');
+                                    loadData();
+                                })
+                            }
+                        }
+                    }else{
+                        if($("#visaPassportForm").valid()) {
+                            $("input[name=graphic]").val($(".w-e-text").html());
+                            utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
+                                hound.success("编辑成功", "", 1000);
+                                utils.modal.modal('hide');
+                                loadData();
+                            })
+                        }
                     }
+
                 }, 'lg');
+                var E = window.wangEditor;
+                var editor = new E('#editor');
+                editor.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+                editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+                editor.create();
+                $(".w-e-text-container").css({"height":"500px"});
+                $(".w-e-text").html(getByIdData.dataArr.graphic);
+                $(".w-e-text-container").css({"z-index":"100"});
+                $("#editor").find(".w-e-menu").css({"z-index":"101"});
                 uploadFile();
                 typeChange();
             });
@@ -157,6 +330,16 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     dataArr:data
                 };
                 utils.renderModal('查看卡片', template('modalDiv', getByIdData),'', 'lg');
+                var E = window.wangEditor;
+                var editor = new E('#editor');
+                editor.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+                editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+                editor.create();
+                $(".w-e-text-container").css({"height":"500px"});
+                $(".w-e-text").html(getByIdData.dataArr.graphic);
+                editor.$textElem.attr('contenteditable', false);
+                $(".w-e-text-container").css({"z-index":"100"});
+                $("#editor").find(".w-e-menu").css({"z-index":"101"});
                 $("#visaPassportForm").append($("fieldset").prop('disabled', true));
             });
         },
