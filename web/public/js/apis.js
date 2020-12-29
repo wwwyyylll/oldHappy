@@ -22,6 +22,24 @@ define("apis", function() {
             view:{
                 c:'joy',
                 a:'view'
+            },
+            del:{
+                c:'joy',
+                a:'del'
+            }
+        },
+        tag:{
+            index:{
+                c:'tag',
+                a:'index'
+            },
+            add:{
+                c:'tag',
+                a:'add'
+            },
+            edit:{
+                c:'tag',
+                a:'edit'
             }
         }
     }

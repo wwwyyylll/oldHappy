@@ -1,15 +1,15 @@
-@@include('../../inc-header.html', {"title": "走马灯信息管理"})
+@@include('../../inc-header.html', {"title": "标签管理"})
 @@include('../../top-nav.html')
 @@include('../../left-nav.html')
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-th-list"></i> 走马灯信息管理</h1>
+            <h1><i class="fa fa-th-list"></i> 标签管理</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb side">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
             <li class="breadcrumb-item">Tables</li>
-            <li class="breadcrumb-item active"><a href="#">走马灯信息管理</a></li>
+            <li class="breadcrumb-item active"><a href="#">标签管理</a></li>
         </ul>
     </div>
     <div class="row">
@@ -19,11 +19,11 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                             <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
-                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">标题</button>
+                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">标签名称</button>
                             <div class="btn-group" role="group">
                                 <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item searchlabel" href="#">标题</a>
+                                    <a class="dropdown-item searchlabel" href="#">标签名称</a>
                                 </div>
                             </div>
                         </div>
@@ -51,9 +51,9 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>标题</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
+        <th>标签名称</th>
+        <th>创建时间</th>
+        <th>更改时间</th>
         <th class="em-min-7">
             <div class="dropdown">
                 <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -62,7 +62,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
                     <a class="dropdown-item" href="javascript:" data-id="">所有</a>
                     <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
-                    <a class="dropdown-item" href="javascript:" data-id="2">无效</a>
+                    <a class="dropdown-item" href="javascript:" data-id="-1">无效</a>
                 </div>
             </div>
         </th>
@@ -74,9 +74,9 @@
     <% for (var i = 0; i < dataArr.length; i++) { %>
     <tr data-id="<%= dataArr[i].id %>">
         <td><%= dataArr[i].id %></td>
-        <td><%= dataArr[i].title %></td>
-        <td><%= dataArr[i].startTime %></td>
-        <td><%= dataArr[i].endTime %></td>
+        <td><%= dataArr[i].name %></td>
+        <td><%= dataArr[i].add_time %></td>
+        <td><%= dataArr[i].edit_time %></td>
         <td><%- dataArr[i].statusText %></td>
         <td>
             <div class="d-flex flex-wrap justify-content-center">
@@ -92,7 +92,7 @@
     <% } %>
     </tbody>
 </script>
-<!--Modal新增,编辑，查看走马灯-->
+<!--Modal新增,编辑，查看-->
 <script id="modalDiv" type="text/html">
     <form id="visaPassportForm" disabled="true">
         <fieldset>
@@ -101,32 +101,28 @@
                 <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">标题</span>
+                            <span class="input-group-text">标签名称</span>
                         </div>
-                        <input type="text" name="title" placeholder="请输入标题" value="<%= dataArr.title %>" class="form-control" required>
+                        <input type="text" name="name" placeholder="请输入标签名称" value="<%= dataArr.name %>" class="form-control" required>
                     </div>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 15px">
-                <div class="col-6">
+                <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">开始时间</span>
+                            <span class="input-group-text">标签状态</span>
                         </div>
-                        <input name="startTime" autocomplete="off" class="form-control" required value="<%= dataArr.startTime %>" onclick="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" placeholder="开始时间">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">结束时间</span>
-                        </div>
-                        <input name="endTime"  autocomplete="off" class="form-control" required value="<%= dataArr.endTime %>" onclick="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" type="text"placeholder="结束时间">
+                        <select name="status" class="form-control" required>
+                            <option value="">请选择</option>
+                            <option value="1"  <% if(dataArr.status==1){ %> selected <% } %>>有效</option>
+                            <option value="-1" <% if(dataArr.status==-1){ %> selected <% } %>>无效</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </fieldset>
     </form>
 </script>
-<script data-main="/public/js/module/system/notice"></script>
+<script data-main="/public/js/module/system/label"></script>
 @@include('../../inc-footer.html')

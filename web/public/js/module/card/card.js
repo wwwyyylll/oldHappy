@@ -7,8 +7,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     var comButtons =
             '<button class="btn btn-primary" type="button" data-operate="edit">编辑</button>'+
             '<button class="btn btn-info" type="button" data-operate="look">查看</button>',
-        startBouutn =  '<button class="btn btn-primary" type="button" data-operate="setOn">有效</button>',
-        stopButton = '<button class="btn btn-danger" type="button" data-operate="setOff">无效</button>';
+        delButton = '<button class="btn btn-danger" type="button" data-operate="del">删除</button>';
 
     searchlabel.on("click",function(){
         $("#selectsearchlabel").text($(this).text());
@@ -167,7 +166,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                         }
                         if(canPost){
                             if($("#visaPassportForm").valid()){
-                                $("input[name=graphic]").val($(".w-e-text").html());
+                                $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                                $("input[name=content]").val($(".w-e-text").eq(1).html());
                                 utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                                     hound.success("添加成功","",1000);
                                     utils.modal.modal('hide');
@@ -179,7 +179,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     },1500);
                 }else{
                     if($("#visaPassportForm").valid()){
-                        $("input[name=graphic]").val($(".w-e-text").html());
+                        $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                        $("input[name=content]").val($(".w-e-text").eq(1).html());
                         utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                             hound.success("添加成功","",1000);
                             utils.modal.modal('hide');
@@ -190,7 +191,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 }
             }else{
                 if($("#visaPassportForm").valid()){
-                    $("input[name=graphic]").val($(".w-e-text").html());
+                    $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                    $("input[name=content]").val($(".w-e-text").eq(1).html());
                     utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                         hound.success("添加成功","",1000);
                         utils.modal.modal('hide');
@@ -209,6 +211,15 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         $(".w-e-text-container").css({"height":"500px"});
         $(".w-e-text-container").css({"z-index":"100"});
         $("#editor").find(".w-e-menu").css({"z-index":"101"});
+
+        var editor1 = new E('#editor1');
+        editor1.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+        editor1.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+        editor1.create();
+        $(".w-e-text-container").css({"height":"500px"});
+        $(".w-e-text-container").css({"z-index":"100"});
+        $("#editor1").find(".w-e-menu").css({"z-index":"101"});
+
         uploadFile();
         typeChange();
     });
@@ -278,7 +289,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                                 }
                                 if(canPost){
                                     if($("#visaPassportForm").valid()) {
-                                        $("input[name=graphic]").val($(".w-e-text").html());
+                                        $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                                        $("input[name=content]").val($(".w-e-text").eq(1).html());
                                         utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                             hound.success("编辑成功", "", 1000);
                                             utils.modal.modal('hide');
@@ -289,7 +301,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                             },1500);
                         }else{
                             if($("#visaPassportForm").valid()) {
-                                $("input[name=graphic]").val($(".w-e-text").html());
+                                $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                                $("input[name=content]").val($(".w-e-text").eq(1).html());
                                 utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                     hound.success("编辑成功", "", 1000);
                                     utils.modal.modal('hide');
@@ -299,7 +312,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                         }
                     }else{
                         if($("#visaPassportForm").valid()) {
-                            $("input[name=graphic]").val($(".w-e-text").html());
+                            $("input[name=graphic]").val($(".w-e-text").eq(0).html());
+                            $("input[name=content]").val($(".w-e-text").eq(1).html());
                             utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                 hound.success("编辑成功", "", 1000);
                                 utils.modal.modal('hide');
@@ -315,9 +329,19 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
                 editor.create();
                 $(".w-e-text-container").css({"height":"500px"});
-                $(".w-e-text").html(getByIdData.dataArr.graphic);
+                $(".w-e-text").eq(0).html(getByIdData.dataArr.graphic);
                 $(".w-e-text-container").css({"z-index":"100"});
                 $("#editor").find(".w-e-menu").css({"z-index":"101"});
+
+                var editor1 = new E('#editor1');
+                editor1.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+                editor1.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+                editor1.create();
+                $(".w-e-text-container").css({"height":"500px"});
+                $(".w-e-text").eq(1).html(getByIdData.dataArr.content);
+                $(".w-e-text-container").css({"z-index":"100"});
+                $("#editor1").find(".w-e-menu").css({"z-index":"101"});
+
                 uploadFile();
                 typeChange();
             });
@@ -336,36 +360,45 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
                 editor.create();
                 $(".w-e-text-container").css({"height":"500px"});
-                $(".w-e-text").html(getByIdData.dataArr.graphic);
+                $(".w-e-text").eq(0).html(getByIdData.dataArr.graphic);
                 editor.$textElem.attr('contenteditable', false);
                 $(".w-e-text-container").css({"z-index":"100"});
                 $("#editor").find(".w-e-menu").css({"z-index":"101"});
+
+                var editor1 = new E('#editor1');
+                editor1.customConfig.showLinkImg = false;         // 隐藏“网络图片”tab
+                editor1.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+                editor1.create();
+                $(".w-e-text-container").css({"height":"500px"});
+                $(".w-e-text").eq(1).html(getByIdData.dataArr.content);
+                editor1.$textElem.attr('contenteditable', false);
+                $(".w-e-text-container").css({"z-index":"100"});
+                $("#editor1").find(".w-e-menu").css({"z-index":"101"});
+
                 $("#visaPassportForm").append($("fieldset").prop('disabled', true));
             });
         },
-        //无效
-        setOff:function($this){
+        //删除
+        del:function($this){
             var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认无效吗?', '', function () {
-                utils.ajaxSubmit(apis.joy.offById, {id: id}, function (data) {
+            hound.confirm('确认删除吗?', '', function () {
+                utils.ajaxSubmit(apis.joy.del, {id: id}, function (data) {
                     loadData();
                 });
             });
         },
-        //有效
-        setOn:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认有效吗?', '', function () {
-                utils.ajaxSubmit(apis.joy.onById, {id: id}, function (data) {
-                    loadData();
-                });
-            });
+        //预览
+        preview:function($this){
+            var textArea = $this.attr("data-content");
+            var oNewWin = window.open('about:blank');
+            oNewWin.document.write(textArea);
+            oNewWin.document.body.style.cssText ='width:500px;margin:50px auto;';
         }
     };
 
     var param = {
-        pageNo: 1,
-        pageSize:20,
+        p: 1,
+        ps:20,
         type:'',
         status:'',
         sortByRead:'',
@@ -379,7 +412,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 n.statusText = consts.status.ordinary[n.status];
                 n.typeText = consts.status.cardType[n.type];
                 n.imageTypeText = consts.status.imageType[n.img_type];
-                n.materialButtonGroup = comButtons ;
+                n.materialButtonGroup = comButtons + delButton;
                 //(n.status=="1")? n.materialButtonGroup = comButtons + stopButton : n.materialButtonGroup = comButtons + startBouutn ;
             });
             data.typeText = listDropDown.typeText;
