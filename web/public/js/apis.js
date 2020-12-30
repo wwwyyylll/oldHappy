@@ -6,6 +6,20 @@ define("apis", function() {
                 a:'login'
             }
         },
+        admin:{
+            index:{
+                c:'admin',
+                a:'index'
+            },
+            add:{
+                c:'admin',
+                a:'add'
+            },
+            edit:{
+                c:'admin',
+                a:'edit'
+            }
+        },
         joy:{
             index:{
                 c:'joy',
@@ -28,17 +42,17 @@ define("apis", function() {
                 a:'del'
             }
         },
-        tag:{
+        joyTag:{
             index:{
-                c:'tag',
+                c:'joyTag',
                 a:'index'
             },
             add:{
-                c:'tag',
+                c:'joyTag',
                 a:'add'
             },
             edit:{
-                c:'tag',
+                c:'joyTag',
                 a:'edit'
             }
         }

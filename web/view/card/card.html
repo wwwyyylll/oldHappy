@@ -68,6 +68,19 @@
         <!--<th>图片</th>-->
         <th>内容</th>
         <th style="width:12%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropTag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= tagText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropTag" id="dropTagOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <% for(var i=0;i< labelArr.length;i++){ %>
+                    <a class="dropdown-item" href="javascript:" data-id="<%= labelArr[i].id %>"><%= labelArr[i].name %></a>
+                    <% } %>
+                </div>
+            </div>
+        </th>
         <!--<th style="width:12%;word-wrap: break-word;word-break:break-all;">商品链接地址</th>-->
         <th class="em-min-7">
             <div class="dropdown">
@@ -148,6 +161,13 @@
             <% } %>
         </td>
         <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].video_url %></td>
+        <td>
+            <% if(list[i].tags.length>0){ %>
+            <% for(var j=0;j< list[i].tags.length;j++){ %>
+            <div style="margin-bottom: 5px"><%= list[i].tags[j].name %></div>
+            <% } %>
+            <% } %>
+        </td>
         <!--<td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].goods_url %></td>-->
         <td><%= list[i].read %></td>
         <td><%= list[i].favorite %></td>
@@ -197,6 +217,47 @@
                             <option value="1"  <% if(dataArr.status==1){ %> selected <% } %>>有效</option>
                             <option value="-1" <% if(dataArr.status==-1){ %> selected <% } %>>无效</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">作者</span>
+                        </div>
+                        <input type="text" name="author" placeholder="请输入作者" value="<%= dataArr.author %>" class="form-control">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">发布时间</span>
+                        </div>
+                        <input autocomplete="off" type="text" name="release_time" onclick="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})"  placeholder="请输入发布时间" value="<%= dataArr.release_time %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12" style="margin-bottom: 20px;padding-right: 20px">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span style="width: 80px;">关联标签：</span>
+                        </div>
+                        <input type="hidden" name="tag_ids">
+                        <% for(var i=0;i< labelArr.length;i++){ %>
+                        <% if(dataArr.tag_ids.indexOf(labelArr[i].id)!="-1"){ %>
+                        <div class="custom-control custom-checkbox custom-control-inline" style="padding-left: 0;margin-right: 25px">
+                            <input data-operate="checkProvince" type="checkbox" id="tag_<%= i %>" name="tag" class="custom-control-input checkboxItem" value="<%= labelArr[i].id %>" checked>
+                            <label style="width: 100%;margin-left: 20px" class="custom-control-label" for="tag_<%= i %>"><%= labelArr[i].name %></label>
+                        </div>
+                        <% }else{ %>
+                        <div class="custom-control custom-checkbox custom-control-inline" style="padding-left: 0;margin-right: 25px">
+                            <input data-operate="checkProvince" type="checkbox" id="tag_<%= i %>" name="tag" class="custom-control-input checkboxItem" value="<%= labelArr[i].id %>">
+                            <label style="width: 100%;margin-left: 20px" class="custom-control-label" for="tag_<%= i %>"><%= labelArr[i].name %></label>
+                        </div>
+                        <% } %>
+                        <% } %>
                     </div>
                 </div>
             </div>

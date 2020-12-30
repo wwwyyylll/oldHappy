@@ -107,10 +107,17 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     $addModal.on("click",function(){
         var initialData = {
             dataArr:{
-                status:1
-            }
+                status:1,
+                tag_ids:''
+            },
+            labelArr:labelArr
         };
         utils.renderModal('新增卡片', template('modalDiv',initialData), function(){
+            var tag_str = ',';
+            $('input[name="tag"]:checked').each(function(){
+                tag_str+=$(this).val()+',';
+            });
+
             var editerContent = $(".w-e-text");
             var editerImg = editerContent.find("img");
             //统计富文本编辑器中图片的数量
@@ -168,10 +175,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                             if($("#visaPassportForm").valid()){
                                 $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                                 $("input[name=content]").val($(".w-e-text").eq(1).html());
+                                $("input[name=tag_ids]").val(tag_str);
                                 utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                                     hound.success("添加成功","",1000);
                                     utils.modal.modal('hide');
-                                    param.pageNo = 1;
+                                    param.p = 1;
                                     loadData();
                                 })
                             }
@@ -181,10 +189,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     if($("#visaPassportForm").valid()){
                         $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                         $("input[name=content]").val($(".w-e-text").eq(1).html());
+                        $("input[name=tag_ids]").val(tag_str);
                         utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                             hound.success("添加成功","",1000);
                             utils.modal.modal('hide');
-                            param.pageNo = 1;
+                            param.p = 1;
                             loadData();
                         })
                     }
@@ -193,10 +202,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 if($("#visaPassportForm").valid()){
                     $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                     $("input[name=content]").val($(".w-e-text").eq(1).html());
+                    $("input[name=tag_ids]").val(tag_str);
                     utils.ajaxSubmit(apis.joy.add,$("#visaPassportForm").serialize(),function(data){
                         hound.success("添加成功","",1000);
                         utils.modal.modal('hide');
-                        param.pageNo = 1;
+                        param.p = 1;
                         loadData();
                     })
                 }
@@ -231,9 +241,15 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             var id = $this.closest("tr").attr("data-id");
             utils.ajaxSubmit(apis.joy.view, {id: id}, function (data) {
                 var getByIdData = {
-                    dataArr:data
+                    dataArr:data,
+                    labelArr:labelArr
                 };
                 utils.renderModal('编辑卡片', template('modalDiv', getByIdData), function(){
+                    var tag_str = ',';
+                    $('input[name="tag"]:checked').each(function(){
+                        tag_str+=$(this).val()+',';
+                    });
+
                     var editerContent = $(".w-e-text");
                     var editerImg = editerContent.find("img");
                     //统计富文本编辑器中图片的数量
@@ -291,6 +307,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                                     if($("#visaPassportForm").valid()) {
                                         $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                                         $("input[name=content]").val($(".w-e-text").eq(1).html());
+                                        $("input[name=tag_ids]").val(tag_str);
                                         utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                             hound.success("编辑成功", "", 1000);
                                             utils.modal.modal('hide');
@@ -303,6 +320,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                             if($("#visaPassportForm").valid()) {
                                 $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                                 $("input[name=content]").val($(".w-e-text").eq(1).html());
+                                $("input[name=tag_ids]").val(tag_str);
                                 utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                     hound.success("编辑成功", "", 1000);
                                     utils.modal.modal('hide');
@@ -314,6 +332,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                         if($("#visaPassportForm").valid()) {
                             $("input[name=graphic]").val($(".w-e-text").eq(0).html());
                             $("input[name=content]").val($(".w-e-text").eq(1).html());
+                            $("input[name=tag_ids]").val(tag_str);
                             utils.ajaxSubmit(apis.joy.edit, $("#visaPassportForm").serialize(), function (data) {
                                 hound.success("编辑成功", "", 1000);
                                 utils.modal.modal('hide');
@@ -351,7 +370,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             var id = $this.closest("tr").attr("data-id");
             utils.ajaxSubmit(apis.joy.view, {id: id}, function (data) {
                 var getByIdData = {
-                    dataArr:data
+                    dataArr:data,
+                    labelArr:labelArr
                 };
                 utils.renderModal('查看卡片', template('modalDiv', getByIdData),'', 'lg');
                 var E = window.wangEditor;
@@ -396,6 +416,19 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         }
     };
 
+    var labelParam = {
+        p: 1,
+        ps:20,
+        status:1
+    };
+    var labelArr;
+    function labelLoadData() {
+        utils.ajaxSubmit(apis.joyTag.index, labelParam, function (data) {
+            labelArr = data.list;
+        });
+    }
+    labelLoadData();
+
     var param = {
         p: 1,
         ps:20,
@@ -403,7 +436,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         status:'',
         sortByRead:'',
         sortByfavorite:'',
-        sortBypraise:''
+        sortBypraise:'',
+        tag_id:''
     };
 
     function loadData() {
@@ -415,18 +449,23 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 n.materialButtonGroup = comButtons + delButton;
                 //(n.status=="1")? n.materialButtonGroup = comButtons + stopButton : n.materialButtonGroup = comButtons + startBouutn ;
             });
+            data.labelArr = labelArr;
             data.typeText = listDropDown.typeText;
             data.statusText = listDropDown.statusText;
             data.readText = listDropDown.readText;
             data.favoriteText = listDropDown.favoriteText;
             data.praiseText = listDropDown.praiseText;
+            data.tagText = listDropDown.tagText;
             $sampleTable.html(template('visaListItem', data));
             utils.bindPagination($visaPagination, param, loadData);
-            $visaPagination.html(utils.pagination(parseInt(data.count), param.pageNo));
+            $visaPagination.html(utils.pagination(parseInt(data.count), param.p));
         });
     }
     // 页面首次加载列表数据
-    loadData();
+    setTimeout(function(){
+        loadData();
+    },100);
+
     utils.bindList($(document), operates);
     //列表筛选事件绑定
     var listDropDown = {
@@ -434,42 +473,48 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         statusText:'状态',
         readText:'有效阅读数',
         favoriteText:'收藏数',
-        praiseText:'点赞数'
+        praiseText:'点赞数',
+        tagText:'关联标签'
     };
     $sampleTable.on('click', '#dropTypeOptions a[data-id]', function () {
         param.type = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.typeText = "卡片格式" : listDropDown.typeText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
         loadData();
     }).on('click', '#dropStatusOptions a[data-id]', function () {
         param.status = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.statusText = "状态" : listDropDown.statusText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
+        loadData();
+    }).on('click', '#dropTagOptions a[data-id]', function () {
+        param.tag_id = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.tagText = "关联标签" : listDropDown.tagText = $(this).text();
+        param.p = 1;
         loadData();
     }).on('click', '#dropReadOptions a[data-id]', function () {
         param.sortByRead = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.readText = "有效阅读数" : listDropDown.readText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
         param.sortByfavorite = '';listDropDown.favoriteText = "收藏数";
         param.sortBypraise = '';  listDropDown.praiseText = "点赞数";
         loadData();
     }).on('click', '#dropFavoriteOptions a[data-id]', function () {
         param.sortByfavorite = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.favoriteText = "收藏数" : listDropDown.favoriteText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
         param.sortByRead = '';listDropDown.readText = "有效阅读数";
         param.sortBypraise = '';  listDropDown.praiseText = "点赞数";
         loadData();
     }).on('click', '#dropPraiseOptions a[data-id]', function () {
         param.sortBypraise = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.praiseText = "点赞数" : listDropDown.praiseText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
         param.sortByRead = '';listDropDown.readText = "有效阅读数";
         param.sortByfavorite = '';listDropDown.favoriteText = "收藏数";
         loadData();
     });
     $("#search").on("click",function(){
-        param.pageNo = 1;
+        param.p = 1;
         param.name = $("#searchCont").val();
         loadData();
     });

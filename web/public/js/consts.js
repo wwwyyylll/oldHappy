@@ -13,6 +13,10 @@ define("consts", function() {
                 '1':'<span style="color:green">有效</span>',
                 '-1':'<span style="color:red">无效</span>'
             },
+            adminStatus:{
+                '1':'<span style="color:green">正常</span>',
+                '-1':'<span style="color:red">关闭</span>'
+            },
             cardType:{
                 '1':'<span style="color:green"> 纯文字</span>',
                 '2':'<span style="color:darkorange"> 图文</span>',

@@ -51,19 +51,6 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th class="em-min-7">
-            <div class="dropdown">
-                <span class="dropdown-toggle" id="dropRole" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <%= roleText %>
-                </span>
-                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropRoleOptions">
-                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
-                    <% for(var j=0;j< roleArr.length;j++){ %>
-                    <a class="dropdown-item" href="javascript:" data-id="<%= roleArr[j].id %>"><%= roleArr[j].title %></a>
-                    <% } %>
-                </div>
-            </div>
-        </th>
         <th>账号</th>
         <th>真实姓名</th>
         <th class="em-min-7">
@@ -73,8 +60,8 @@
                 </span>
                 <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
                     <a class="dropdown-item" href="javascript:" data-id="">所有</a>
-                    <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
-                    <a class="dropdown-item" href="javascript:" data-id="2">无效</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">正常</a>
+                    <a class="dropdown-item" href="javascript:" data-id="-1">关闭</a>
                 </div>
             </div>
         </th>
@@ -82,17 +69,16 @@
     </tr>
     </thead>
     <tbody>
-    <% if (dataArr.length > 0) { %>
-    <% for (var i = 0; i < dataArr.length; i++) { %>
-    <tr data-id="<%= dataArr[i].id %>">
-        <td><%= dataArr[i].id %></td>
-        <td><%= dataArr[i].roleTitle %></td>
-        <td><%= dataArr[i].userName %></td>
-        <td><%= dataArr[i].realName %></td>
-        <td><%- dataArr[i].statusText %></td>
+    <% if (list.length > 0) { %>
+    <% for (var i = 0; i < list.length; i++) { %>
+    <tr data-id="<%= list[i].id %>">
+        <td><%= list[i].id %></td>
+        <td><%= list[i].userName %></td>
+        <td><%= list[i].realName %></td>
+        <td><%- list[i].statusText %></td>
         <td>
             <div class="d-flex flex-wrap justify-content-center">
-                <%- dataArr[i].materialButtonGroup %>
+                <%- list[i].materialButtonGroup %>
             </div>
         </td>
     </tr>
@@ -110,7 +96,7 @@
         <fieldset>
             <input type="hidden" name="id" value="<%= dataArr.id %>">
             <div class="form-row" style="margin-bottom: 15px">
-                <div class="col-4">
+                <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">账号</span>
@@ -118,7 +104,9 @@
                         <input type="text" name="userName" placeholder="请输入账号" value="<%= dataArr.userName %>" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-4">
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">真实姓名</span>
@@ -126,7 +114,9 @@
                         <input type="text" name="realName" placeholder="请输入真实姓名" value="<%= dataArr.realName %>" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-4">
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">密码</span>
@@ -136,16 +126,15 @@
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 15px">
-                <div class="col-4">
+                <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">角色</span>
+                            <span class="input-group-text">管理员状态</span>
                         </div>
-                        <select name="roleId" class="form-control" required>
+                        <select name="status" class="form-control" required>
                             <option value="">请选择</option>
-                            <% for(var i=0;i < roleArr.length;i++){ %>
-                            <option value="<%= roleArr[i].id %>" <% if(roleArr[i].id==dataArr.roleId){ %> selected <% } %>><%= roleArr[i].title %></option>
-                            <% } %>
+                            <option value="1"  <% if(dataArr.status==1){ %> selected <% } %>>正常</option>
+                            <option value="-1" <% if(dataArr.status==-1){ %> selected <% } %>>关闭</option>
                         </select>
                     </div>
                 </div>
