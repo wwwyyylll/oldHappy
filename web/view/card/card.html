@@ -64,7 +64,8 @@
                 </div>
             </div>
         </th>
-        <th>图片格式</th>
+        <th style="width:15%;word-wrap: break-word;word-break:break-all;">文章标题</th>
+        <!--<th>图片格式</th>-->
         <!--<th>图片</th>-->
         <th>内容</th>
         <th style="width:12%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
@@ -139,7 +140,8 @@
     <tr data-id="<%= list[i].id %>">
         <td><%= list[i].id %></td>
         <td><%- list[i].typeText %></td>
-        <td><% if(list[i].img_type!="" && list[i].img_type!=null){ %><%- list[i].imageTypeText %><% } %></td>
+        <td style="width:15%;word-wrap: break-word;word-break:break-all;"><%= list[i].title %></td>
+        <!--<td><% if(list[i].img_type!="" && list[i].img_type!=null){ %><%- list[i].imageTypeText %><% } %></td>-->
         <!--<td>-->
             <!--<% if(list[i].img_url){ %>-->
             <!--<a target="_blank" href="<%= list[i].img_url %>">-->
@@ -221,6 +223,16 @@
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">文章标题</span>
+                        </div>
+                        <input type="text" name="title" placeholder="请输入文章标题" value="<%= dataArr.title %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
                 <div class="col-6">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -261,20 +273,20 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>
-                <div class="col-6">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">图片格式</span>
-                        </div>
-                        <select name="img_type" class="form-control">
-                            <option value="">请选择</option>
-                            <option value="1" <% if(dataArr.img_type==1){ %> selected <% } %>>横板</option>
-                            <option value="2" <% if(dataArr.img_type==2){ %> selected <% } %>>竖版</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="form-row type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>-->
+                <!--<div class="col-6">-->
+                    <!--<div class="input-group">-->
+                        <!--<div class="input-group-prepend">-->
+                            <!--<span class="input-group-text">图片格式</span>-->
+                        <!--</div>-->
+                        <!--<select name="img_type" class="form-control">-->
+                            <!--<option value="">请选择</option>-->
+                            <!--<option value="1" <% if(dataArr.img_type==1){ %> selected <% } %>>横板</option>-->
+                            <!--<option value="2" <% if(dataArr.img_type==2){ %> selected <% } %>>竖版</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <!--<div class="form-row uploadFile type2" <% if(dataArr.type==2){ %> style="margin-bottom: 15px;display: block;height:37px" <% }else{ %> style="margin-bottom: 15px;display: none;height:37px" <% } %>>-->
                 <!--<div class="col-5" style="float: left">-->
                     <!--<div class="input-group">-->
