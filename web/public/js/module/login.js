@@ -10,7 +10,7 @@ require(["consts", "apis", "utils"], function(consts, apis, utils) {
     });
     $login.on("click",function(){
         if($form.valid()){
-            utils.ajaxSubmit(apis.login.login,$form.serialize(),function(data){
+            utils.ajaxSubmit(apis.login.index,$form.serialize(),function(data){
                 //$.cookie('userName',$("input[name=userName]").val());
                 $.cookie('userToken',data.userToken);
                 window.location.href = "@@HOSTview/card/card.html";

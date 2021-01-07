@@ -1,9 +1,9 @@
 define("apis", function() {
     return {
         login:{
-            login:{
-                c:'admin',
-                a:'login'
+            index:{
+                c:'login',
+                a:'index'
             }
         },
         admin:{

@@ -110,19 +110,19 @@ define("utils", ["consts", "apis"], function(consts, apis) {
          */
         bindPagination: function($pagination, param, loadData) {
             $pagination.one('click', '.pagination a', function () {
-                param.pageNo = $(this).data('page');
+                param.p = $(this).data('page');
                 loadData();
             }).on('blur', '.pagination input', function () {
                 var page = parseInt($(this).val());
-                if (!isNaN(page) && param.pageNo !== page) {
-                    param.pageNo = page;
+                if (!isNaN(page) && param.p !== page) {
+                    param.p = page;
                     loadData();
                 }
             }).on('keypress', '.pagination input', function (e) {
                 if (e.which === 13) {
                     var page = parseInt($(this).val());
-                    if (!isNaN(page) && param.pageNo !== page) {
-                        param.pageNo = page;
+                    if (!isNaN(page) && param.p !== page) {
+                        param.p = page;
                         loadData();
                     }
                 }

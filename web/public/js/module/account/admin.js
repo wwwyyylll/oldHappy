@@ -130,7 +130,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             data.roleText = listDropDown.roleText;
             $sampleTable.html(template('visaListItem', data));
             utils.bindPagination($visaPagination, param, loadData);
-            $visaPagination.html(utils.pagination(parseInt(data.count), param.p));
+            $visaPagination.html(utils.pagination(parseInt(data.count), param.p,20));
         });
     }
     // 页面首次加载列表数据

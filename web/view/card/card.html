@@ -68,7 +68,6 @@
         <!--<th>图片格式</th>-->
         <!--<th>图片</th>-->
         <th>内容</th>
-        <th style="width:12%;word-wrap: break-word;word-break:break-all;">视频链接地址</th>
         <th class="em-min-7">
             <div class="dropdown">
                 <span class="dropdown-toggle" id="dropTag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -131,6 +130,7 @@
                 </div>
             </div>
         </th>
+        <th>录入人</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -140,7 +140,12 @@
     <tr data-id="<%= list[i].id %>">
         <td><%= list[i].id %></td>
         <td><%- list[i].typeText %></td>
-        <td style="width:15%;word-wrap: break-word;word-break:break-all;"><%= list[i].title %></td>
+        <td style="width:15%;word-wrap: break-word;word-break:break-all;">
+            <div style="margin-bottom: 5px"><%= list[i].title %></div>
+            <div>
+                <a href="<%= list[i].video_url %>" target="_blank" style="text-decoration: underline"><%= list[i].video_url %></a>
+            </div>
+        </td>
         <!--<td><% if(list[i].img_type!="" && list[i].img_type!=null){ %><%- list[i].imageTypeText %><% } %></td>-->
         <!--<td>-->
             <!--<% if(list[i].img_url){ %>-->
@@ -162,7 +167,6 @@
             <% } %>
             <% } %>
         </td>
-        <td style="width:12%;word-wrap: break-word;word-break:break-all;"><%= list[i].video_url %></td>
         <td>
             <% if(list[i].tags.length>0){ %>
             <% for(var j=0;j< list[i].tags.length;j++){ %>
@@ -175,6 +179,11 @@
         <td><%= list[i].favorite %></td>
         <td><%= list[i].praise %></td>
         <td><%- list[i].statusText %></td>
+        <td>
+            <% if(list[i].admin){ %>
+            <%= list[i].admin.realName %>
+            <% } %>
+        </td>
         <td>
             <div class="d-flex flex-wrap justify-content-center">
                 <%- list[i].materialButtonGroup %>
