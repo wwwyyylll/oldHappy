@@ -418,12 +418,12 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
 
     var labelParam = {
         p: 1,
-        ps:20,
+        ps:100,
         status:1
     };
     var labelArr;
     function labelLoadData() {
-        utils.ajaxSubmit(apis.joyTag.index, labelParam, function (data) {
+        utils.ajaxSubmit(apis.tag.index, labelParam, function (data) {
             labelArr = data.list;
         });
     }
@@ -437,7 +437,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         sortByRead:'',
         sortByfavorite:'',
         sortBypraise:'',
-        tag_id:''
+        tag_id:'',
+        title:''
     };
 
     function loadData() {
@@ -515,7 +516,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     });
     $("#search").on("click",function(){
         param.p = 1;
-        param.name = $("#searchCont").val();
+        param.title = $("#searchCont").val();
         loadData();
     });
     $('#searchCont').on('keypress',function(event){

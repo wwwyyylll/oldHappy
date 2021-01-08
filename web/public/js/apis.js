@@ -42,17 +42,17 @@ define("apis", function() {
                 a:'del'
             }
         },
-        joyTag:{
+        tag:{
             index:{
-                c:'joyTag',
+                c:'tag',
                 a:'index'
             },
             add:{
-                c:'joyTag',
+                c:'tag',
                 a:'add'
             },
             edit:{
-                c:'joyTag',
+                c:'tag',
                 a:'edit'
             }
         }

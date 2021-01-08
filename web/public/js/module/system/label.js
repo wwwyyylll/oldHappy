@@ -23,7 +23,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         };
         utils.renderModal('新增标签', template('modalDiv',initialData), function(){
             if($("#visaPassportForm").valid()){
-                utils.ajaxSubmit(apis.joyTag.add,$("#visaPassportForm").serialize(),function(data){
+                utils.ajaxSubmit(apis.tag.add,$("#visaPassportForm").serialize(),function(data){
                     hound.success("添加成功","",1000);
                     utils.modal.modal('hide');
                     param.p = 1;
@@ -57,7 +57,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             };
             utils.renderModal('编辑标签', template('modalDiv', getByIdData), function(){
                 if($("#visaPassportForm").valid()) {
-                    utils.ajaxSubmit(apis.joyTag.edit, $("#visaPassportForm").serialize(), function (data) {
+                    utils.ajaxSubmit(apis.tag.edit, $("#visaPassportForm").serialize(), function (data) {
                         hound.success("编辑成功", "", 1000);
                         utils.modal.modal('hide');
                         loadData();
@@ -98,7 +98,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     };
 
     function loadData() {
-        utils.ajaxSubmit(apis.joyTag.index, param, function (data) {
+        utils.ajaxSubmit(apis.tag.index, param, function (data) {
             //根据状态值显示对应的状态文字 + 显示 有效/无效按钮  置顶/取消置顶按钮
             $.each(data.list,function(i,n){
                 n.statusText = consts.status.ordinary[n.status];
