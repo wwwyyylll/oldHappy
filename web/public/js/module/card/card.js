@@ -244,6 +244,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     dataArr:data,
                     labelArr:labelArr
                 };
+                getByIdData.dataArr.tag_ids = getByIdData.dataArr.tag_ids.split(",");
                 utils.renderModal('编辑卡片', template('modalDiv', getByIdData), function(){
                     var tag_str = ',';
                     $('input[name="tag"]:checked').each(function(){
@@ -373,6 +374,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     dataArr:data,
                     labelArr:labelArr
                 };
+                getByIdData.dataArr.tag_ids = getByIdData.dataArr.tag_ids.split(",");
                 utils.renderModal('查看卡片', template('modalDiv', getByIdData),'', 'lg');
                 var E = window.wangEditor;
                 var editor = new E('#editor');
