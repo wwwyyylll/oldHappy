@@ -103,12 +103,43 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         })
     }
 
+    //获取当前时间
+    function getDate(){
+        var myDate = new Date();
+        var year = myDate.getFullYear();    //获取完整的年份(4位,1970-????)
+        var month = myDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)
+        var date = myDate.getDate();        //获取当前日(1-31)
+        var hour = myDate.getHours();       //获取当前小时数(0-23)
+        var minutes = myDate.getMinutes();     //获取当前分钟数(0-59)
+        var seconds = myDate.getSeconds();     //获取当前秒数(0-59)
+
+        function addZero(a){
+            var aa = "";
+            if(a<10){
+                aa = "0" + a;
+            }else{
+                aa = a;
+            }
+            return aa;
+        }
+        month = addZero(month);
+        date = addZero(date);
+        hour = addZero(hour);
+        minutes = addZero(minutes);
+        seconds = addZero(seconds);
+
+        var dateData = year + "-" + month + "-" + date + " " + hour + ":" + minutes + ":" + seconds;
+        return dateData;
+    }
+
     //新增
     $addModal.on("click",function(){
+        var releaseTime = getDate();
         var initialData = {
             dataArr:{
                 status:1,
-                tag_ids:''
+                tag_ids:'',
+                release_time:releaseTime
             },
             labelArr:labelArr
         };
