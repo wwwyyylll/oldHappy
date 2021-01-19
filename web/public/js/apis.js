@@ -55,6 +55,16 @@ define("apis", function() {
                 c:'tag',
                 a:'edit'
             }
+        },
+        user:{
+            index:{
+                c:'user',
+                a:'index'
+            },
+            setOperator:{
+                c:'user',
+                a:'setOperator'
+            }
         }
     }
 });

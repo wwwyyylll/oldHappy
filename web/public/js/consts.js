@@ -25,6 +25,10 @@ define("consts", function() {
             imageType:{
                 '1':'<span style="color:orange"> 横板</span>',
                 '2':'<span style="color:green"> 竖版</span>'
+            },
+            isNo:{
+                '1':'<span style="color:green">是</span>',
+                '-1':'<span style="color:red">否</span>'
             }
         }
     }

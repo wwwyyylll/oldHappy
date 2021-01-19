@@ -5,14 +5,8 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     var $visaPagination = $("#visaPagination");
     //按钮组集合
     var comButtons = '<button class="btn btn-info" type="button" data-operate="look">查看详情</button>',
-        allowButton = '<button class="btn btn-primary" type="button" data-operate="allow">允许登录</button>',
-        disableButton = '<button class="btn btn-danger" type="button" data-operate="notAllow">禁止登录</button>',
-        addDistButton = '<button class="btn btn-primary" type="button" data-operate="addDist">设为分销商</button>',
-        bindMemberIdButton = '<button class="btn btn-primary" type="button" data-operate="bindMemberId">绑定会员运营ID</button>',
-        canRecommendButton = '<button class="btn btn-primary" type="button" data-operate="canRecommend">设为好物推荐官</button>',
-        cancelRecommendButton = '<button class="btn btn-danger" type="button" data-operate="cancelRecommend">取消好物推荐官</button>',
-        signUpButton = '<button class="btn btn-primary" type="button" data-operate="signUp">已签约</button>',
-        cancelSignUpButton = '<button class="btn btn-danger" type="button" data-operate="cancelSignUp">取消签约</button>';
+        setOperatorButton = '<button class="btn btn-primary" type="button" data-operate="setOperator">设为运营者</button>',
+        cancelOperatorButton = '<button class="btn btn-danger" type="button" data-operate="cancelOperator">取消运营者</button>';
 
     searchlabel.on("click",function(){
         $("#selectsearchlabel").text($(this).text());
@@ -57,7 +51,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     uploadFile.find(".temporaryFile").text(base64Url);
                 })
             }
-        })
+        });
         // 上传图片文件
         $('.avatarUpload').click(function () {
             var uploadFile = $(this).closest(".uploadFile");
@@ -87,15 +81,6 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
 
     //页面操作配置
     var operates = {
-        bindMemberId:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.reason('确认绑定会员运营ID吗?','请输入要绑定的会员运营ID',function(data){
-                utils.ajaxSubmit(apis.user.bindMemberOperationId, {id: id,memberOperationId:data}, function (data) {
-                    hound.success("操作成功", "", 1000);
-                    loadData();
-                });
-            })
-        },
         //编辑
         edit:function($this){
             var id = $this.closest("tr").attr("data-id");
@@ -141,153 +126,47 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             window.location.href = "@@HOSTview/account/userDetailsLook.html?id=" + id;
         },
         //允许登录
-        allow:function($this){
+        setOperator:function($this){
             var id = $this.closest("tr").attr("data-id");
-            hound.reason('确认设为允许登录吗?','请输入允许登录原因',function(data){
-                utils.ajaxSubmit(apis.user.allowLoginById, {id: id,reason:data}, function (data) {
+            hound.confirm('确认设为运营者吗?','',function(data){
+                utils.ajaxSubmit(apis.user.setOperator, {id: id,operator:1}, function (data) {
                     hound.success("操作成功", "", 1000);
                     loadData();
                 });
             })
         },
         //禁止登录
-        notAllow:function($this){
+        cancelOperator:function($this){
             var id = $this.closest("tr").attr("data-id");
-            hound.reason('确认设为禁止登录吗?','请输入禁止登录原因',function(data){
-                utils.ajaxSubmit(apis.user.disableLoginById, {id: id,reason:data}, function (data) {
+            hound.confirm('确认取消运营者吗?','',function(data){
+                utils.ajaxSubmit(apis.user.setOperator, {id: id,operator:-1}, function (data) {
                     hound.success("操作成功", "", 1000);
                     loadData();
                 });
             })
-        },
-        //设为好物推荐官
-        canRecommend:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认设为好物推荐官吗?','',function(data){
-                utils.ajaxSubmit(apis.user.canRecommendTaobaoItemById, {id: id}, function (data) {
-                    hound.success("操作成功", "", 1000);
-                    loadData();
-                });
-            })
-        },
-        //取消好物推荐官
-        cancelRecommend:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认取消好物推荐官吗?','',function(data){
-                utils.ajaxSubmit(apis.user.cancelRecommendTaobaoItemById, {id: id}, function (data) {
-                    hound.success("操作成功", "", 1000);
-                    loadData();
-                });
-            })
-        },
-        signUp:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认已签约吗?','',function(data){
-                utils.ajaxSubmit(apis.user.signUpById, {id: id}, function (data) {
-                    hound.success("操作成功", "", 1000);
-                    loadData();
-                });
-            })
-        },
-        cancelSignUp:function($this){
-            var id = $this.closest("tr").attr("data-id");
-            hound.confirm('确认取消签约吗?','',function(data){
-                utils.ajaxSubmit(apis.user.cancelSignUpById, {id: id}, function (data) {
-                    hound.success("操作成功", "", 1000);
-                    loadData();
-                });
-            })
-        },
-        addDist:function($this){
-            var userId = $this.closest("tr").attr("data-id");
-            var tr = $this.closest("tr");
-            var nickName = tr.find("td").eq(1).find("a").text();
-
-            var initialData = {
-                dataArr:{
-                    userId:userId,
-                    nickName:nickName,
-                    name:'',
-                    adZoneId:'',
-                    content:''
-                }
-            };
-            utils.renderModal('设为分销商', template('addDistDiv',initialData), function(){
-                if($("#addDistForm").valid()){
-                    utils.loading(true);
-                    utils.ajaxSubmit(apis.distributors.create,$("#addDistForm").serialize(),function(data){
-                        utils.loading(false);
-                        hound.success("设置成功","",1000);
-                        utils.modal.modal('hide');
-                        loadData();
-                    })
-                }
-            }, 'md');
         }
     };
 
-    // 页面首次加载列表数据
-    //打开的对应的页面nav + active属性
-    var loc = location.href;
-    var n1 = loc.length;//地址的总长度
-    var n2 = loc.indexOf("=");//取得=号的位置
-    var id = decodeURI(loc.substr(n2+1,n1-n2));//从=号后面的内容
-    var urlParam = id.split("=");
-    var warnValue = '';
-    if(urlParam[0]==1){
-        warnValue = urlParam[0];
-    }else{
-        warnValue = '';
-    }
-
     var param = {
-        pageNo: 1,
-        pageSize:10,
-        status:'',
-        isSignUp:'',
-        nickName:'',
-        memberOperationId:'',
-        id:'',
-        canRecommendTaobaoItem:'',
-        orderByTaobaoCommissionRate:'',
-        warn:warnValue
+        p: 1,
+        ps:20,
+        operator:'',
+        status:''
     };
 
     function loadData() {
-        utils.ajaxSubmit(apis.user.getLists, param, function (data) {
+        utils.ajaxSubmit(apis.user.index, param, function (data) {
             //根据状态值显示对应的状态文字 + 显示对应的 允许登录/禁止登录 按钮
-            $.each(data.dataArr,function(i,n){
-                n.statusText = consts.status.user[n.status];
-                n.isSignUpText = consts.status.isBind[n.isSignUp];
-                n.isDistributorsText = consts.status.isBind[n.isDistributors];
-                n.canRecommendTaobaoItemText = consts.status.isBind[n.canRecommendTaobaoItem];
-                n.sourceText = consts.status.userSource[n.source];
-                (n.status=="1")? n.materialButtonGroup = disableButton : n.materialButtonGroup = allowButton  ;
-                (n.isDistributors=='1')? n.materialButtonGroup = n.materialButtonGroup : n.materialButtonGroup = n.materialButtonGroup + addDistButton ;
-                if(n.memberOperationId=='' || n.memberOperationId==null){
-                    n.materialButtonGroup = n.materialButtonGroup + bindMemberIdButton ;
-                }else{
-                    n.materialButtonGroup = n.materialButtonGroup ;
-                }
-                if(n.canRecommendTaobaoItem == 1){
-                    n.materialButtonGroup = n.materialButtonGroup + cancelRecommendButton ;
-                }else if(n.canRecommendTaobaoItem == 2){
-                    n.materialButtonGroup = n.materialButtonGroup + canRecommendButton ;
-                }
-                if(n.isSignUp == 2){
-                    n.materialButtonGroup = n.materialButtonGroup + signUpButton ;
-                }else{
-                    n.materialButtonGroup = n.materialButtonGroup + cancelSignUpButton ;
-                }
+            $.each(data.list,function(i,n){
+                n.operatorText = consts.status.isNo[n.operator];
+                n.statusText = consts.status.adminStatus[n.status];
+                (n.operator=="1")? n.materialButtonGroup = cancelOperatorButton : n.materialButtonGroup = setOperatorButton ;
             });
+            data.operatorText = listDropDown.operatorText;
             data.statusText = listDropDown.statusText;
-            data.sourceText = listDropDown.sourceText;
-            data.signUpText = listDropDown.signUpText;
-            data.canRecommendText = listDropDown.canRecommendText;
-            data.taobaoCommissionRateText = listDropDown.taobaoCommissionRateText;
             $sampleTable.html(template('visaListItem', data));
             utils.bindPagination($visaPagination, param, loadData);
-            $visaPagination.html(utils.pagination(parseInt(data.cnt), param.pageNo));
+            $visaPagination.html(utils.pagination(parseInt(data.count), param.p,20));
         });
     }
     // 页面首次加载列表数据
@@ -295,40 +174,22 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     utils.bindList($(document), operates);
     //列表筛选事件绑定
     var listDropDown = {
-        statusText:'状态',
-        sourceText:'来源',
-        signUpText:'已签约',
-        canRecommendText:'好物推荐官',
-        taobaoCommissionRateText:'佣金率'
+        operatorText:'是否运营者',
+        statusText:'状态'
     };
     $sampleTable.on('click', '#dropStatusOptions a[data-id]', function () {
         param.status = $(this).data('id');
         ($(this).text()=="所有") ? listDropDown.statusText = "状态" : listDropDown.statusText = $(this).text();
-        param.pageNo = 1;
+        param.p = 1;
         loadData();
-    }).on('click', '#dropTopOptions a[data-id]', function () {
-        param.source = $(this).data('id');
-        ($(this).text()=="所有") ? listDropDown.sourceText = "来源" : listDropDown.sourceText = $(this).text();
-        param.pageNo = 1;
-        loadData();
-    }).on('click', '#dropSignUpOptions a[data-id]', function () {
-        param.isSignUp = $(this).data('id');
-        ($(this).text()=="所有") ? listDropDown.signUpText = "已签约" : listDropDown.signUpText = $(this).text();
-        param.pageNo = 1;
-        loadData();
-    }).on('click', '#dropCanRecommendOptions a[data-id]', function () {
-        param.canRecommendTaobaoItem = $(this).data('id');
-        ($(this).text()=="所有") ? listDropDown.canRecommendText = "好物推荐官" : listDropDown.canRecommendText = $(this).text();
-        param.pageNo = 1;
-        loadData();
-    }).on('click', '#dropTaobaoCommissionRateOptions a[data-id]', function () {
-        param.orderByTaobaoCommissionRate = $(this).data('id');
-        ($(this).text()=="所有") ? listDropDown.taobaoCommissionRateText = "佣金率" : listDropDown.taobaoCommissionRateText = $(this).text();
-        param.pageNo = 1;
+    }).on('click', '#dropOperatorOptions a[data-id]', function () {
+        param.operator = $(this).data('id');
+        ($(this).text()=="所有") ? listDropDown.operatorText = "是否运营者" : listDropDown.operatorText = $(this).text();
+        param.p = 1;
         loadData();
     });
     $("#search").on("click",function(){
-        param.pageNo = 1;
+        param.p = 1;
         //判断是手机号搜索还是用户昵称搜索
         var selectsearchLabel = $("#selectsearchlabel").text();
         if(selectsearchLabel=="昵称"){
@@ -340,11 +201,6 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             param.id = '';
             param.nickName = '';
             param.memberOperationId = $("#searchCont").val();
-            loadData();
-        }else if(selectsearchLabel=="会员ID"){
-            param.nickName = '';
-            param.memberOperationId = '';
-            param.id = $("#searchCont").val();
             loadData();
         }
     });
