@@ -3,6 +3,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     var $addModal = $("#addModal");
     var $sampleTable = $('#sampleTable');
     var $visaPagination = $("#visaPagination");
+    var $batchImport = $("#batchImport");
     //按钮组集合
     var comButtons =
             '<button class="btn btn-primary" type="button" data-operate="edit">编辑</button>'+
@@ -102,6 +103,82 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             }
         })
     }
+
+    var importFileData = '';
+    $batchImport.on("click",function(){
+        var getData = {labelArr:labelArr};
+        utils.renderModal('批量导入', template('batchImportModal',getData), function(){
+            utils.loading(true);
+            //console.log(importFileData);
+            //var importData = {
+            //    source:$("select[name=source]").val(),
+            //    file:importFileData
+            //}
+            //utils.ajaxSubmit(apis.goods.importFromExcel, importData, function (data) {
+            //    hound.success("导入成功", "", 1000);
+            //    utils.modal.modal('hide');
+            //    loadData();
+            //})
+
+            var formFile = new FormData();
+            formFile.append("c", "goods");
+            formFile.append("a", "importFromExcel");
+            formFile.append("linkUserName", consts.param.linkUserName);
+            formFile.append("linkPassword", consts.param.linkPassword);
+            formFile.append("signature", consts.param.signature);
+            formFile.append("userToken", $.cookie('userToken'));
+            formFile.append("type", $("select[name=type]").val());
+            formFile.append("tag", $("select[name=tag]").val());
+            formFile.append("file", importFileData);
+
+            $.ajax({
+                type:'POST',
+                url: "@@API",
+                data: formFile,
+                dataType: 'json',
+                cache: false, //上传文件无需缓存
+                processData: false, //用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (res) {
+                    utils.loading(false);
+                    if(res.code==200){
+                        hound.success(res.result,"",'').then(function(){
+                            utils.modal.modal('hide');
+                            loadData();
+                        });
+                    }else{
+                        hound.error(res.message);
+                    }
+                }
+            }).fail(function (jqXHR, textStatus) {
+                utils.loading(false);
+                hound.error('Request failed: ' + textStatus);
+            });
+
+        },'md');
+        $('.uploadFileBatch').change(function () {
+            if (window.FileReader) {
+                var reader = new FileReader();
+            } else {
+                hound.alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+            }
+            $('.avatarUploadBatch').removeClass('btn-default').addClass('btn-primary').prop('disabled', false);
+            var file = this.files[0];
+            importFileData = file;
+            console.log(importFileData);
+            reader.onload = function(e) {
+                $(".imgUrl").html('<i class="fa fa-folder mr-2"></i>' + file.name)
+            };
+            reader.readAsDataURL(file);
+
+            //if(file){
+            //    var url = URL.createObjectURL(file);
+            //    var base64 = blobToDataURL(file,function(base64Url) {
+            //        importFileData = base64Url;
+            //    })
+            //}
+        });
+    });
 
     //获取当前时间
     function getDate(){

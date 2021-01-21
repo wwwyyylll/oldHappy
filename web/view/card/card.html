@@ -27,8 +27,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="btn-group" style="margin-left:1%;display: none">
+                        <div class="btn-group" style="margin-left:1%">
                             <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                        </div>
+                        <div class="btn-group" style="margin-left:1%">
+                            <button id="batchImport" class="btn btn-success" style="outline:none">批量导入</button>
                         </div>
                         <div class="btn-group" style="float:right">
                             <button id="addModal" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="outline:none;margin-left: 3px">新增</button>
@@ -46,6 +49,57 @@
         </div>
     </div>
 </main>
+<!-- 批量上传模板 -->
+<script id="batchImportModal" type="text/html">
+    <form id="importExcelForm" disabled="true">
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-7">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">卡片格式</span>
+                    </div>
+                    <select name="type" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="1">纯文字</option>
+                        <option value="2">图文</option>
+                        <option value="3">视频</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-7">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">标签</span>
+                    </div>
+                    <select name="tag" class="form-control">
+                        <option value="">请选择</option>
+                        <% for(var i=0;i< labelArr.length;i++){ %>
+                        <option value="<%= labelArr[i].id %>"><%= labelArr[i].name %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-row uploadFileBatchDiv" style="margin-bottom: 15px">
+            <div class="col-7">
+                <div class="input-group">
+                    <span style="margin-top:6px;margin-right: 10px">上传文件</span>
+                    <label class="file-label btn btn-primary mb-0 mr-2"><input type="file" name="file" class="uploadFileBatch d-none">选择文件</label>
+                    <!--<button type="button" class="btn btn-default avatarUploadBatch" disabled>上传文件</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px">
+            <div class="col-12">
+                <div class="input-group">
+                    <h6 class="imgUrl"></h6>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
 <!-- 列表模板 -->
 <script id="visaListItem" type="text/html">
     <thead>
