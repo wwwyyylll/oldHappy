@@ -120,15 +120,20 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             //    loadData();
             //})
 
+            var tag_str = ',';
+            $('input[name="tag"]:checked').each(function(){
+                tag_str+=$(this).val()+',';
+            });
+
             var formFile = new FormData();
-            formFile.append("c", "goods");
-            formFile.append("a", "importFromExcel");
+            formFile.append("c", "joy");
+            formFile.append("a", "upload");
             formFile.append("linkUserName", consts.param.linkUserName);
             formFile.append("linkPassword", consts.param.linkPassword);
             formFile.append("signature", consts.param.signature);
             formFile.append("userToken", $.cookie('userToken'));
             formFile.append("type", $("select[name=type]").val());
-            formFile.append("tag", $("select[name=tag]").val());
+            formFile.append("tag_ids", tag_str);
             formFile.append("file", importFileData);
 
             $.ajax({
@@ -142,7 +147,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                 success: function (res) {
                     utils.loading(false);
                     if(res.code==200){
-                        hound.success(res.result,"",'').then(function(){
+                        hound.success("操作成功","",'').then(function(){
                             utils.modal.modal('hide');
                             loadData();
                         });

@@ -52,7 +52,7 @@
 <!-- 批量上传模板 -->
 <script id="batchImportModal" type="text/html">
     <form id="importExcelForm" disabled="true">
-        <div class="form-row" style="margin-bottom: 15px">
+        <div class="form-row" style="margin-bottom: 15px;display: none">
             <div class="col-7">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -61,24 +61,25 @@
                     <select name="type" class="form-control">
                         <option value="">请选择</option>
                         <option value="1">纯文字</option>
-                        <option value="2">图文</option>
+                        <option value="2" selected>图文</option>
                         <option value="3">视频</option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="form-row" style="margin-bottom: 15px">
-            <div class="col-7">
+            <div class="col-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">标签</span>
+                        <span style="width: 80px;">关联标签：</span>
                     </div>
-                    <select name="tag" class="form-control">
-                        <option value="">请选择</option>
-                        <% for(var i=0;i< labelArr.length;i++){ %>
-                        <option value="<%= labelArr[i].id %>"><%= labelArr[i].name %></option>
-                        <% } %>
-                    </select>
+                    <input type="hidden" name="tag_ids">
+                    <% for(var i=0;i< labelArr.length;i++){ %>
+                    <div class="custom-control custom-checkbox custom-control-inline" style="padding-left: 0;margin-right: 25px">
+                        <input data-operate="checkProvince" type="checkbox" id="tag_<%= i %>" name="tag" class="custom-control-input checkboxItem" value="<%= labelArr[i].id %>">
+                        <label style="width: 100%;margin-left: 20px" class="custom-control-label" for="tag_<%= i %>"><%= labelArr[i].name %></label>
+                    </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -399,6 +400,11 @@
                         </div>
                         <input type="text" name="video_url" placeholder="请输入视频链接地址" value="<%= dataArr.video_url %>" class="form-control">
                     </div>
+                </div>
+            </div>
+            <div class="form-row type3" <% if(dataArr.type==3){ %> style="display: block" <% }else{ %> style="display: none" <% } %>>
+                <div class="col-12">
+                    <h5 style="color: red">*视频链接格式为：http://wx.dhbiji.com/file/laolehui/</h5>
                 </div>
             </div>
             <!--<div class="form-row type3" <% if(dataArr.type==3){ %> style="margin-bottom: 15px;display: block" <% }else{ %> style="margin-bottom: 15px;display: none" <% } %>>-->

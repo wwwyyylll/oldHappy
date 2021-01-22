@@ -40,6 +40,10 @@ define("apis", function() {
             del:{
                 c:'joy',
                 a:'del'
+            },
+            upload:{
+                c:'joy',
+                a:'upload'
             }
         },
         tag:{
