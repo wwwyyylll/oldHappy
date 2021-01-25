@@ -358,6 +358,10 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     labelArr:labelArr
                 };
                 getByIdData.dataArr.tag_ids = getByIdData.dataArr.tag_ids.split(",");
+                getByIdData.dataArr.content = getByIdData.dataArr.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                getByIdData.dataArr.graphic = getByIdData.dataArr.graphic.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                getByIdData.dataArr.content = getByIdData.dataArr.content.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
+                getByIdData.dataArr.graphic = getByIdData.dataArr.graphic.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
                 utils.renderModal('编辑卡片', template('modalDiv', getByIdData), function(){
                     var tag_str = ',';
                     $('input[name="tag"]:checked').each(function(){
@@ -488,6 +492,10 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
                     labelArr:labelArr
                 };
                 getByIdData.dataArr.tag_ids = getByIdData.dataArr.tag_ids.split(",");
+                getByIdData.dataArr.content = getByIdData.dataArr.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                getByIdData.dataArr.graphic = getByIdData.dataArr.graphic.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                getByIdData.dataArr.content = getByIdData.dataArr.content.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
+                getByIdData.dataArr.graphic = getByIdData.dataArr.graphic.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
                 utils.renderModal('查看卡片', template('modalDiv', getByIdData),'', 'lg');
                 var E = window.wangEditor;
                 var editor = new E('#editor');
@@ -559,6 +567,11 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
     function loadData() {
         utils.ajaxSubmit(apis.joy.index, param, function (data) {
             $.each(data.list,function(i,n){
+                n.content = n.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                n.graphic = n.graphic.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                n.content = n.content.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
+                n.graphic = n.graphic.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
+
                 n.statusText = consts.status.ordinary[n.status];
                 n.typeText = consts.status.cardType[n.type];
                 n.imageTypeText = consts.status.imageType[n.img_type];
