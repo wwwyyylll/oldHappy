@@ -52,7 +52,7 @@
 <!-- 批量上传模板 -->
 <script id="batchImportModal" type="text/html">
     <form id="importExcelForm" disabled="true">
-        <div class="form-row" style="margin-bottom: 15px;display: none">
+        <div class="form-row" style="margin-bottom: 15px">
             <div class="col-7">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -60,29 +60,29 @@
                     </div>
                     <select name="type" class="form-control">
                         <option value="">请选择</option>
-                        <option value="1">纯文字</option>
-                        <option value="2" selected>图文</option>
+                        <option value="2">图文</option>
                         <option value="3">视频</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="form-row" style="margin-bottom: 15px">
-            <div class="col-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span style="width: 80px;">关联标签：</span>
-                    </div>
-                    <input type="hidden" name="tag_ids">
-                    <% for(var i=0;i< labelArr.length;i++){ %>
-                    <div class="custom-control custom-checkbox custom-control-inline" style="padding-left: 0;margin-right: 25px">
-                        <input data-operate="checkProvince" type="checkbox" id="tag_<%= i %>" name="tag" class="custom-control-input checkboxItem" value="<%= labelArr[i].id %>">
-                        <label style="width: 100%;margin-left: 20px" class="custom-control-label" for="tag_<%= i %>"><%= labelArr[i].name %></label>
-                    </div>
-                    <% } %>
-                </div>
-            </div>
-        </div>
+        <div class="form-row message" style="margin-bottom: 15px;color:red;line-height: 37px;font-size: 15px"></div>
+        <!--<div class="form-row" style="margin-bottom: 15px">-->
+            <!--<div class="col-12">-->
+                <!--<div class="input-group">-->
+                    <!--<div class="input-group-prepend">-->
+                        <!--<span style="width: 80px;">关联标签：</span>-->
+                    <!--</div>-->
+                    <!--<input type="hidden" name="tag_ids">-->
+                    <!--<% for(var i=0;i< labelArr.length;i++){ %>-->
+                    <!--<div class="custom-control custom-checkbox custom-control-inline" style="padding-left: 0;margin-right: 25px">-->
+                        <!--<input data-operate="checkProvince" type="checkbox" id="tag_<%= i %>" name="tag" class="custom-control-input checkboxItem" value="<%= labelArr[i].id %>">-->
+                        <!--<label style="width: 100%;margin-left: 20px" class="custom-control-label" for="tag_<%= i %>"><%= labelArr[i].name %></label>-->
+                    <!--</div>-->
+                    <!--<% } %>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="form-row uploadFileBatchDiv" style="margin-bottom: 15px">
             <div class="col-7">
                 <div class="input-group">

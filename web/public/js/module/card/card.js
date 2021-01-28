@@ -104,6 +104,20 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
         })
     }
 
+    function messageText(){
+        $("select[name=type]").on("change",function(){
+            if($(this).val()==2){
+                //图文
+                $(".message").html("*注意：上传EXCEL文件格式为 类型 + 标题 + 作者 + 内容");
+            }else if($(this).val()==3){
+                //视频
+                $(".message").html("*注意：上传EXCEL文件格式为 视频地址 + 类别 + 作者 + 标题");
+            }else{
+                $(".message").html("");
+            }
+        })
+    }
+
     var importFileData = '';
     $batchImport.on("click",function(){
         var getData = {labelArr:labelArr};
@@ -161,6 +175,7 @@ require(["consts", "apis", "utils", "common"], function(consts, apis, utils) {
             });
 
         },'md');
+        messageText();
         $('.uploadFileBatch').change(function () {
             if (window.FileReader) {
                 var reader = new FileReader();
