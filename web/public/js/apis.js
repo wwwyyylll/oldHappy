@@ -69,6 +69,46 @@ define("apis", function() {
                 c:'user',
                 a:'setOperator'
             }
+        },
+        greeting:{
+            index:{
+                c:'greeting',
+                a:'index'
+            },
+            add:{
+                c:'greeting',
+                a:'add'
+            },
+            edit:{
+                c:'greeting',
+                a:'edit'
+            },
+            view:{
+                c:'greeting',
+                a:'view'
+            }
+        },
+        blessing:{
+            index:{
+                c:'blessing',
+                a:'index'
+            },
+            add:{
+                c:'blessing',
+                a:'add'
+            },
+            edit:{
+                c:'blessing',
+                a:'edit'
+            },
+            view:{
+                c:'blessing',
+                a:'view'
+            },
+            findByTitle:{
+                c:'blessing',
+                a:'findByTitle'
+            }
         }
     }
 });

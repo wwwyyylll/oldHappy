@@ -1,0 +1,138 @@
+@@include('../../inc-header.html', {"title": "贺卡祝福语管理"})
+@@include('../../top-nav.html')
+@@include('../../left-nav.html')
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-th-list"></i> 贺卡祝福语管理</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+            <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item active"><a href="#">贺卡祝福语管理</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="row" style="margin-bottom:20px ">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="display: none">
+                            <input type="text" class="form-control" id="searchCont" autocomplete="off" style="width:60%">
+                            <button class="btn btn-secondary" type="button" id="selectsearchlabel">账号</button>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-primary dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item searchlabel" href="#">账号</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-left:1%;display: none">
+                            <div id="search" class="btn btn-primary" style="outline:none">提交搜索</div>
+                        </div>
+                        <div class="btn-group" style="float:right">
+                            <button id="addModal" class="btn btn-primary" style="outline:none;margin-left: 3px">新增</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable"></table>
+                        <div id="visaPagination" class="d-flex justify-content-end">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- 列表模板 -->
+<script id="visaListItem" type="text/html">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>排序</th>
+        <th style="width:20%;word-wrap: break-word;word-break:break-all;">祝福语内容</th>
+        <th class="em-min-7">
+            <div class="dropdown">
+                <span class="dropdown-toggle" id="dropStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= statusText %>
+                </span>
+                <div class="dropdown-menu" aria-labelledby="dropdownVisaStatus" id="dropStatusOptions">
+                    <a class="dropdown-item" href="javascript:" data-id="">所有</a>
+                    <a class="dropdown-item" href="javascript:" data-id="1">有效</a>
+                    <a class="dropdown-item" href="javascript:" data-id="2">无效</a>
+                </div>
+            </div>
+        </th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if (list.length > 0) { %>
+    <% for (var i = 0; i < list.length; i++) { %>
+    <tr data-id="<%= list[i].id %>">
+        <td><%= list[i].id %></td>
+        <td><%= list[i].sort %></td>
+        <td style="width:20%;word-wrap: break-word;word-break:break-all;"><%= list[i].content %></td>
+        <td><%- list[i].statusText %></td>
+        <td><%= list[i].add_time %></td>
+        <td>
+            <div class="d-flex flex-wrap justify-content-center">
+                <%- list[i].materialButtonGroup %>
+            </div>
+        </td>
+    </tr>
+    <% } %>
+    <% } else { %>
+    <tr>
+        <td colspan="6">没有符合条件的记录</td>
+    </tr>
+    <% } %>
+    </tbody>
+</script>
+<!--Modal新增,编辑，查看-->
+<script id="modalDiv" type="text/html">
+    <form id="visaPassportForm" disabled="true">
+        <fieldset>
+            <input type="hidden" name="id" value="<%= dataArr.id %>">
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">排序</span>
+                        </div>
+                        <input type="text" name="sort" placeholder="请输入排序" value="<%= dataArr.sort %>" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">状态</span>
+                        </div>
+                        <select name="status" class="form-control" required>
+                            <option value="">请选择</option>
+                            <option value="1"  <% if(dataArr.status==1){ %> selected <% } %>>有效</option>
+                            <option value="-1" <% if(dataArr.status==-1){ %> selected <% } %>>无效</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px">
+                <div class="col-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">祝福语内容</span>
+                        </div>
+                        <textarea name="content" style="resize:vertical;min-height: 100px;" class="form-control" required><%= dataArr.content %></textarea>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</script>
+<script data-main="/public/js/module/activity/greetingCardBlessing"></script>
+@@include('../../inc-footer.html')
